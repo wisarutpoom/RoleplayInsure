@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InsureQuest สยามอคาเดมี | ยุทธภพนักขาย 25 ด่าน & คุยสดเรียลไทม์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070D19;
+      --surface: #111A2E;
+      --surface-2: #192540;
+      --gold: #F4C430;
+      --emerald: #10B981;
+      --cyan: #22D3EE;
+      --coral: #F43F5E;
+      --text: #F8FAFC;
+      --muted: #94A3B8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Sarabun', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .font-heading { font-family: 'Prompt', sans-serif; }
+    .topbar {
+      background: rgba(17, 26, 46, 0.95);
+      border-bottom: 1px solid rgba(244, 196, 48, 0.35);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-title { color: var(--gold); font-weight: 800; font-size: 1.05rem; }
+    .badge {
+      padding: 3px 10px;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.18);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tab-btn {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 7px 13px;
+      border-radius: 99px;
+      cursor: pointer;
+      font-family: 'Prompt', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--gold);
+      color: #070D19;
+      border-color: var(--gold);
+      font-weight: 800;
+    }
+    .container { max-width: 1120px; margin: 0 auto; padding: 14px; }
+    .game-layout {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px) {
+      .game-layout { grid-template-columns: 1fr; }
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid rgba(244, 196, 48, 0.22);
+      border-radius: 18px;
+      padding: 12px;
+    }
+    .stage-list {
+      max-height: 75vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      padding-right: 4px;
+    }
+    .stage-item {
+      background: var(--surface-2);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 9px 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+    .stage-item:hover, .stage-item.active {
+      border-color: var(--gold);
+      background: rgba(244, 196, 48, 0.12);
+    }
+    .stage-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(244, 196, 48, 0.2);
+      color: var(--gold);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(15, 23, 42, 0.78);
+      color: var(--cyan);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.15s;
+    }
+    .icon-btn:hover { transform: scale(1.08); border-color: var(--gold); }
+    .stage-canvas-wrap {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1.5px solid rgba(244, 196, 48, 0.55);
+      background: #080E1C;
+    }
+    #roleplayCanvas {
+      width: 100%;
+      height: 245px;
+      display: block;
+    }
+    .canvas-hud-top {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+    .hud-pill {
+      pointer-events: auto;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(244, 196, 48, 0.4);
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .hud-icons {
+      pointer-events: auto;
+      display: flex;
+      gap: 6px;
+    }
+    .live-call-bar {
+      background: rgba(25, 37, 64, 0.85);
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sim-chip {
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .chat-box {
+      height: 225px;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: rgba(7, 13, 25, 0.55);
+      border-radius: 14px;
+      margin: 8px 0;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .bubble {
+      max-width: 88%;
+      padding: 9px 13px;
+      border-radius: 14px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    .bubble.customer {
+      align-self: flex-start;
+      background: var(--surface-2);
+      border: 1px solid rgba(34, 211, 238, 0.35);
+    }
+    .bubble.agent {
+      align-self: flex-end;
+      background: rgba(244, 196, 48, 0.16);
+      border: 1px solid rgba(244, 196, 48, 0.45);
+    }
+    .bubble.agent.warning {
+      border-color: var(--coral);
+    }
+    .bubble-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+      gap: 10px;
+    }
+    .voice-coach-box {
+      margin-top: 6px;
+      padding: 6px 9px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .voice-coach-box.warn {
+      background: rgba(244, 63, 94, 0.18);
+      border: 1px solid rgba(244, 63, 94, 0.55);
+      color: #FDA4AF;
+    }
+    .voice-coach-box.good {
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: #6EE7B7;
+    }
+    .controls-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .mic-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: var(--cyan);
+      color: #061320;
+      font-size: 1.2rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      font-weight: 800;
+      transition: 0.2s;
+    }
+    .mic-btn.recording {
+      background: var(--coral);
+      color: #fff;
+      box-shadow: 0 0 16px var(--coral);
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    .chat-input {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+    }
+    .send-btn {
+      background: var(--gold);
+      color: #070D19;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: 'Prompt', sans-serif;
+    }
+    .eval-btn {
+      background: var(--emerald);
+      color: #04261C;
+      border: none;
+      padding: 7px 13px;
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: 'Prompt', sans-serif;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 16px;
+    }
+    .modal-card {
+      background: var(--surface);
+      border: 1.5px solid var(--gold);
+      border-radius: 18px;
+      max-width: 520px;
+      width: 100%;
+      padding: 18px;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+    .rank-row {
+      background: var(--surface-2);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .rank-row.me {
+      background: rgba(244, 196, 48, 0.16);
+      border-color: var(--gold);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-title">⚜️ INSUREQUEST ยุทธภพนักขาย</span>
+      <span class="badge" id="equippedTitleBadge">🏅 ฉายา: จอมยุทธ์ไมค์ทองคำ</span>
+      <span class="badge" id="aiEngineBadge" style="background:rgba(34,211,238,0.16);color:var(--cyan);border-color:rgba(34,211,238,0.4);cursor:pointer;" onclick="openQuotaResetModal()">✨ Gemini API Free (250/250 • รีเซ็ต 15:00 น.)</span>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('game')">⚔️ ยุทธภพนักขาย (25 ด่าน)</button>
+      <button class="tab-btn" onclick="switchTab('challenge')">🏆 ศึกชิงแชมป์ (Top 1-10)</button>
+      <button class="tab-btn" onclick="switchTab('vault')">🏅 คัมภีร์ & เหรียญฉายา</button>
+      <button class="tab-btn" onclick="switchTab('admin')">🛡️ แอดมิน (Web Portal)</button>
+    </div>
+  </header>
+
+  <!-- TAB 1: ยุทธภพนักขาย 25 ด่าน + คุยสดเรียลไทม์ -->
+  <main class="container" id="tab-game">
+    <div class="game-layout">
+      <!-- ซ้าย: รายการ 25 ด่านสายฮา + อันดับรายด่าน + ปุ่ม ℹ️ เตรียมตัว -->
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <h3 style="font-size:0.95rem;color:var(--gold);">⚔️ ยุทธภพ 25 ด่าน (กด ℹ️ เตรียมตัว)</h3>
+          <span id="stageProgressText" style="font-size:0.75rem;color:var(--emerald);font-weight:700;">ผ่าน 2/25</span>
+        </div>
+        <div class="stage-list" id="stageListContainer"></div>
+      </div>
+
+      <!-- ขวา: เวทีตัวละครคุยกันซึ่งหน้า + Lip-Sync อัตโนมัติ + คุยสดเรียลไทม์ -->
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;">
+          <div style="overflow:hidden;">
+            <div id="activeStageHeaderLabel" style="font-size:0.75rem;color:var(--gold);font-weight:700;">ด่านที่ 1/25 • ★ • อันดับของคุณ #3</div>
+            <h2 id="activeStageTitle" style="font-size:1.0rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></h2>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0;">
+            <button class="icon-btn" title="เช็กโควต้าฟรี Gemini API & เวลารีเซ็ตพรุ่งนี้" onclick="openQuotaResetModal()">🛡️</button>
+            <button class="icon-btn" title="แฟ้มข้อมูลเตรียมตัวก่อนคุย" onclick="openStageInfoModal()">ℹ️</button>
+            <button class="icon-btn" title="คัมภีร์ประโยคทอง" onclick="openTipsModal()">💡</button>
+            <button class="eval-btn" onclick="evaluateStageNow()">📊 ประเมินผล</button>
+          </div>
+        </div>
+
+        <!-- ฉากตัวละครคู่สนทนา Dual-Avatar Lip-Sync Canvas -->
+        <div class="stage-canvas-wrap">
+          <canvas id="roleplayCanvas" width="760" height="245"></canvas>
+          <div class="canvas-hud-top">
+            <div style="display:flex;gap:6px;">
+              <div class="hud-pill" onclick="openStageInfoModal()">
+                <span>❤️ ความเชื่อใจ: <strong id="trustScoreText" style="color:var(--emerald)">64%</strong></span>
+              </div>
+              <div class="hud-pill" id="comboPill" style="display:none;border-color:var(--gold);color:var(--gold);">
+                🔥 <span id="comboText">1x COMBO</span>
+              </div>
+            </div>
+            <div class="hud-icons">
+              <button class="icon-btn" id="bgmBtn" title="เปิด/ปิดเพลงประกอบเกม (Auto-Duck เมื่อเปิดไมค์)" onclick="toggleBgm()">🎵</button>
+              <button class="icon-btn" id="ttsBtn" title="เปิด/ปิดเสียงพูดลูกค้า AI" onclick="toggleCustomerTts()">🔊</button>
+              <button class="icon-btn" title="ให้ลูกค้าพูดซ้ำ" onclick="replayLastCustomerSpeech()">🗣️</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- แถบคุยสายสดเรียลไทม์เสถียรภาพสูง (Half-Duplex Echo Gate + 1.2s Silence Debounce) -->
+        <div class="live-call-bar">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+            <div id="liveCallStatusBanner" style="font-size:0.8rem;font-weight:700;color:var(--cyan);">
+              📞 โหมดคุยสดเสถียรภาพสูง (Half-Duplex): ป้องกันเสียงสะท้อน 450ms + รอจังหวะหายใจ 1.2 วินาที
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <button id="flushSpeechBtn" class="sim-chip" style="display:none;background:var(--gold);color:#070D19;" onclick="flushPendingSpeechNow()">
+                ส่งทันที ▶
+              </button>
+              <button id="autoCallToggleBtn" class="sim-chip" style="background:rgba(16,185,129,0.2);color:var(--emerald);" onclick="toggleAutoHandsFree()">
+                🟢 คุยสดต่อเนื่องอัตโนมัติ: เปิด
+              </button>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <span style="font-size:0.74rem;color:var(--muted);">🎙️ ทดสอบ Voice Coaching & โควต้า:</span>
+            <button class="sim-chip" style="background:rgba(16,185,129,0.16);color:#6EE7B7;" onclick="simulateVoiceTurn('BALANCED')">✅ พูดจังหวะมืออาชีพ (132 WPM)</button>
+            <button class="sim-chip" style="background:rgba(244,63,94,0.18);color:#FDA4AF;" onclick="simulateVoiceTurn('FAST_WPM')">⚡ ทดสอบพูดเร็ว (178 WPM &gt; 165)</button>
+            <button class="sim-chip" style="background:rgba(244,196,48,0.16);color:var(--gold);" onclick="simulateVoiceTurn('QUIET_VOICE')">🔉 ทดสอบพูดเสียงเบา</button>
+            <button class="sim-chip" style="background:rgba(244,63,94,0.22);color:#FDA4AF;border-color:var(--coral);" onclick="simulateQuotaExhaustedPopup()">⏰ ทดสอบแจ้งเตือนโควต้าฟรีหมด</button>
+          </div>
+        </div>
+
+        <!-- รายการแชทบับเบิล (พร้อม Voice Coaching Alert ในบับเบิล) -->
+        <div class="chat-box" id="chatContainer"></div>
+
+        <!-- แผงไมโครโฟนเรียลไทม์และช่องพิมพ์ -->
+        <div class="controls-row">
+          <button class="mic-btn" id="micBtn" title="กดเพื่อพูดคุยสดเรียลไทม์" onclick="toggleMicRecording()">🎙️</button>
+          <input type="text" id="speechInput" class="chat-input" placeholder="กดไมค์ 🎙️ พูดคุยสดเรียลไทม์ (ระบบรอจังหวะหายใจ 1.2 วิ) หรือพิมพ์บทพูด..." onkeydown="if(event.key==='Enter') sendAgentSpeech()" />
+          <button class="icon-btn" title="เลือกประโยคแนะนำ" onclick="openTipsModal()">💡</button>
+          <button class="send-btn" onclick="sendAgentSpeech()">ส่งคำพูด</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- TAB 2: ศึกชิงแชมป์ (Challenge Top 1-10 & อันดับรายด่าน 1-25) -->
+  <section class="container" id="tab-challenge" style="display:none;">
+    <div class="panel" style="margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div>
+          <h2 style="color:var(--gold);font-size:1.2rem;">🏆 แดชบอร์ดศึกชิงแชมป์ (Challenge Leaderboard Top 1–10)</h2>
+          <p style="font-size:0.85rem;color:var(--muted);">แข่งขันชิงรางวัลคะแนนสูงสุด & รางวัลขยันซ้อมจำนวนครั้งสูงสุด พร้อมดูอันดับของคุณในแต่ละด่านครบทั้ง 25 ด่าน</p>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <div style="background:rgba(244,196,48,0.14);border:1px solid var(--gold);padding:8px 14px;border-radius:12px;">
+            <div style="font-size:0.72rem;color:var(--gold);">🏆 อันดับคะแนนรวมของคุณ</div>
+            <div id="myOverallScoreRankText" style="font-size:1.1rem;font-weight:800;">อันดับ #7</div>
+          </div>
+          <div style="background:rgba(34,211,238,0.14);border:1px solid var(--cyan);padding:8px 14px;border-radius:12px;">
+            <div style="font-size:0.72rem;color:var(--cyan);">🔥 อันดับจำนวนครั้งของคุณ</div>
+            <div id="myOverallAttemptsRankText" style="font-size:1.1rem;font-weight:800;">อันดับ #8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:14px;">
+      <div class="panel">
+        <h3 style="color:var(--gold);margin-bottom:10px;font-size:1rem;">🥇 รางวัลคะแนนสูงสุด (High Score Top 1–10)</h3>
+        <div id="highScoreLeaderboardContainer"></div>
+      </div>
+      <div class="panel">
+        <h3 style="color:var(--cyan);margin-bottom:10px;font-size:1rem;">🔥 รางวัลจำนวนครั้งสูงสุด (Most Attempts Top 1–10)</h3>
+        <div id="attemptsLeaderboardContainer"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="color:var(--emerald);margin-bottom:10px;font-size:1rem;">📍 อันดับของคุณในแต่ละด่าน (ครบทั้ง 25 ด่าน)</h3>
+      <div id="perStageRanksContainer" class="grid-2"></div>
+    </div>
+  </section>
+
+  <!-- TAB 3: คัมภีร์ลับ & เหรียญเกียรติยศ (18 Hilarious Badges) -->
+  <section class="container" id="tab-vault" style="display:none;">
+    <div class="panel" style="margin-bottom:14px;">
+      <h2 style="color:var(--gold);font-size:1.2rem;">🏅 ตู้โชว์เหรียญตรา & ฉายาสุดฮา (ปลดล็อกจากสไตล์การเล่นของคุณ)</h2>
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:12px;">กดเลือกสวมใส่ฉายาที่ปลดล็อกแล้วเพื่อนำไปอวดบนตารางศึกชิงแชมป์!</p>
+      <div id="badgesGridContainer" class="grid-2"></div>
+    </div>
+  </section>
+
+  <!-- TAB 4: หน้าผู้ดูแลระบบ (สำหรับใช้งานบน Website เท่านั้น) -->
+  <section class="container" id="tab-admin" style="display:none;">
+    <div class="panel">
+      <h2 style="color:var(--gold);margin-bottom:6px;">🛡️ ระบบผู้ดูแลและเลขาฯ (สำหรับใช้งานผ่าน Website เท่านั้น)</h2>
+      <p style="color:var(--muted);font-size:0.86rem;margin-bottom:14px;">เมนูแอดมินและโดเมนถูกแยกมาไว้บนเว็บไซต์ <strong>roleplay.smartnexus.vip</strong> โดยเฉพาะ เพื่อให้ตัวแอพมือถือเป็นเกมแข่งขันเต็มรูปแบบ</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px;">
+        <div style="background:var(--surface-2);padding:12px;border-radius:12px;">
+          <div style="color:var(--muted);font-size:0.75rem;">ผู้ดูแลระบบหลัก (Master Admin)</div>
+          <div style="font-size:1rem;font-weight:700;color:var(--gold);">Wisarutpoom@gmail.com</div>
+        </div>
+        <div style="background:var(--surface-2);padding:12px;border-radius:12px;">
+          <div style="color:var(--muted);font-size:0.75rem;">สถานะ Subdomain</div>
+          <div style="font-size:1rem;font-weight:700;color:var(--emerald);">✅ roleplay.smartnexus.vip (199.36.158.100)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL ポップアップสำหรับแสดงรายละเอียดเมื่อกดปุ่มไอคอน -->
+  <div class="modal-backdrop" id="infoModalBackdrop" onclick="closeModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 id="modalTitle" style="color:var(--gold);font-size:1.05rem;"></h3>
+        <button class="icon-btn" onclick=" closeModal()">✕</button>
+      </div>
+      <div id="modalBody" style="font-size:0.9rem;line-height:1.55;color:var(--text);"></div>
+    </div>
+  </div>
+
+  <script>
+    // ==================== ข้อมูล 25 ด่านสายฮา + คาแรคเตอร์ลูกค้า + แฟ้มข้อมูลเตรียมตัว ====================
+    const STAGES = [
+      { n: 1, diff: 1, title: "ด่าน 1: ศึกปะทะผู้จัดการ 5G ตัดบทใน 3 วินาที!", cust: "คุณกานต์ สายฟ้าแลบ (ผจก.คิวทอง)", age: 34, job: "ผู้จัดการฝ่ายการตลาด", persona: "พูดเร็วระดับแร็ปเปอร์ ใจร้อน กำลังจะเข้าประชุมในอีก 5 นาที", fact: "เพิ่งเลื่อนตำแหน่ง เงินเดือนพุ่งแต่โดนหักภาษีหนักมาก ยังไม่มีเวลาวางแผนลดหย่อนภาษี", obj: "ขอเวลา 45 วินาที ชี้เป้าเรื่องลดหย่อนภาษี และให้เลือกวันนัด (อังคารบ่าย หรือ พฤหัสเช้า)", open: "ฮัลโหลครับ! อ๋อประกันเหรอครับ พอดีผมกำลังเดินเข้าห้องประชุมเลย มีอะไรพูดมาใน 10 วิครับ ไม่งั้นวางนะ!", dir: "นัดหมายวางแผนบริหารภาษีผู้บริหาร" },
+      { n: 2, diff: 2, title: "ด่าน 2: เจ๊พิมพ์คลินิกพันล้าน กรมธรรม์ล้นตู้เซฟ!", cust: "เจ๊พิมพ์ โบท็อกซ์ทองคำ", age: 41, job: "เจ้าของคลินิกความงาม", persona: "สวยและรวยมาก ซื้อประกันช่วยเพื่อนไว้ 5 เล่มจนจำไม่ได้ว่าคุ้มครองอะไร", fact: "มีแต่ประกันออมทรัพย์ แต่ค่าห้อง รพ.เบิกได้แค่คืนละ 2,000 บาท", obj: "ชื่นชมเจ๊พิมพ์และเสนอบริการทำสรุปกรมธรรม์ทั้ง 5 เล่มในกระดาษแผ่นเดียวฟรี", open: "อุ๊ยตายแล้วน้องขา! เรื่องประกันเจ๊มีเต็มตู้เซฟไปหมดแล้วค่ะ ซื้อช่วยเพื่อนจนตู้จะระเบิดแล้ว ไม่ทำเพิ่มแล้วจ้า!", dir: "นัดพบเพื่อทำสรุปกรมธรรม์เดิม (Policy Audit)" },
+      { n: 3, diff: 2, title: "ด่าน 3: โปรแกรมเมอร์สายระแวง ใครเอาเบอร์ผมให้เนี่ย?!", cust: "น้องนนท์ โค้ดดิ้งสายระแวง", age: 31, job: "Senior Software Engineer", persona: "หวงความเป็นส่วนตัวขั้นสุด คิดว่าเบอร์แปลกคือแก๊งคอลเซ็นเตอร์", fact: "คุณเอก (เพื่อนสนิท) แนะนำมาเพราะเห็นเพิ่งแต่งงานและกู้ซื้อบ้านใหม่ 6 ล้าน", obj: "เอ่ยชื่อคุณเอกทันที สร้างความสบายใจ และขอนัดจิบกาแฟ 15 นาที", open: "ฮัลโหลครับ... เดี๋ยวนะ คุณได้เบอร์ส่วนตัวผมมาจากไหนครับเนี่ย? ผิด PDPA หรือเปล่าครับ?!", dir: "นัดพบทำความรู้จักวางแผนครอบครัวใหม่" },
+      { n: 4, diff: 3, title: "ด่าน 4: แม่ค้าออนไลน์ร้อยล้าน ส่งเข้า LINE มาเลยจ้า", cust: "น้องเมย์ ไลฟ์สดร้อยล้าน", age: 29, job: "อินฟลูเอนเซอร์ & แม่ค้าออนไลน์", persona: "ติดแชท ชอบตัดบทด้วยประโยค 'ส่งเข้า LINE มาดูก่อนนะจ๊ะ' แล้วดองแชท", fact: "รายได้เดือนละหลายแสนแต่ไม่มีสวัสดิการเลย", obj: "เปลี่ยนจากการส่งโบรชัวร์ที่ลูกค้าไม่อ่าน เป็นการนัดคุยออกแบบเฉพาะตัว 15 นาที", open: "ตัวเองขา ตอนนี้เมย์กำลังเช็กสต็อกเตรียมไลฟ์สด ส่งรายละเอียดเข้า LINE มาทิ้งไว้ก่อนเลยจ้า!", dir: "นัดพบทำ Fact-Finding เฉพาะบุคคล" },
+      { n: 5, diff: 3, title: "ด่าน 5: เฮียวิชัยหัวร้อน! ตัวแทนเก่าหายเข้ากลีบเมฆ", cust: "เฮียวิชัย หินคลุกเหล็กเส้น", age: 50, job: "เถ้าแก่ค้าส่งวัสดุก่อสร้าง", persona: "เสียงดัง 120 เดซิเบล โมโหตัวแทนคนเก่าที่ขายเสร็จแล้วติดต่อไม่ได้", fact: "มีกรมธรรม์ของครอบครัว 3 เล่มที่ขาดคนดูแล", obj: "รับฟังอย่างเข้าใจ ไม่แก้ตัวแทนคนเก่า และอาสาเข้าไปช่วยตรวจเช็กเล่มเดิมให้ฟรี", open: "โอ๊ย! ไม่ต้องมาพูดเรื่องประกันให้เฮียฟังเลยนะ! คนก่อนพอจ่ายตังค์ปุ๊บหายหัวเข้ากลีบเมฆ เข็ดจนวันตาย!", dir: "นัดพบตรวจเช็กสิทธิ์กรมธรรม์เดิมฟรี" },
+      { n: 6, diff: 4, title: "ด่าน 6: ด่านอรหันต์ มาดาม CFO หญิงเหล็ก จับเวลา 60 วิ!", cust: "มาดามศิริพร เครื่องคิดเลขเดินได้", age: 46, job: "CFO บริษัทมหาชน", persona: "เฉียบคม พูดจาเป็นตัวเลข จับเวลาคุยสายตรงแค่ 60 วินาที", fact: "สนใจเรื่องการบริหารภาษีมรดกและสวัสดิการผู้บริหาร", obj: "ใช้น้ำเสียงระดับ Executive กระชับ ชี้ประเด็นภาษีมรดกและปิดนัดหมาย", open: "ดิฉันศิริพรค่ะ เลขาแจ้งว่าคุณมีเรื่องสำคัญ ดิฉันจับเวลาให้ 60 วินาทีนะคะ เริ่มพูดได้เลยค่ะ", dir: "นัดพบผู้บริหารวางแผนภาษีและมรดก" },
+      { n: 7, diff: 2, title: "ด่าน 7: สถาปนิกกอดอก 'วันนี้ผมไม่เซ็นอะไรทั้งนั้น!'", cust: "คุณอาร์ต การ์ดสูงปรี๊ด", age: 35, job: "สถาปนิกอิสระ", persona: "นั่งกอดอกแน่น มองนาฬิกาทุก 10 วินาที กลัวโดนฮาร์ดเซลล์", fact: "ปั่นงานดึกทุกคืน กลัวว่าถ้าป่วยนอน รพ. เงินเก็บจะหายหมด", obj: "ทำข้อตกลงล่วงหน้าว่าวันนี้เก็บปากกาใส่กระเป๋า ไม่มีการขาย 100%", open: "เชิญนั่งครับ... บอกไว้ก่อนเลยนะว่าผมมีเวลาแค่ 15 นาที แล้ววันนี้ผมไม่เซ็นเอกสารอะไรทั้งนั้นนะครับ!", dir: "สร้างความไว้วางใจเข้าสู่ Fact-Finding" },
+      { n: 8, diff: 2, title: "ด่าน 8: เพื่อนรักหักเหลี่ยมเกรงใจ กลัวเสียเพื่อน", cust: "เบลล์ เภสัชสายเกรงใจ", age: 30, job: "เภสัชกรเจ้าของร้านยา", persona: "เพื่อนซี้สมัยมหาลัย กลัวว่าถ้าไม่ซื้อประกันแล้วจะมองหน้ากันไม่ติด", fact: "มีเงินฝากนอนนิ่งในออมทรัพย์ 2 ล้านบาท และดูแลแม่วัยเกษียณ", obj: "แยกหมวกเพื่อนกับที่ปรึกษาให้ชัดเจน ยืนยันว่าไม่ซื้อก็ยังรักกันเหมือนเดิม", open: "แก... ดีใจนะที่ได้เจอกัน แต่พูดตรงๆ เรากลัวเสียเพื่อนว่ะ ถ้าเราไม่ทำแกจะโกรธป่ะเนี่ย?", dir: "สร้างความมั่นใจและขออัปเดตเป้าหมายการเงิน" },
+      { n: 9, diff: 3, title: "ด่าน 9: โค้ชเคนเซียนหุ้น 'ประกันผลตอบแทนเต่าคลาน!'", cust: "โค้ชเคน กราฟเขียว (แอบดอย)", age: 33, job: "เทรดเดอร์ & เจ้าของเพจหุ้น", persona: "มั่นใจในกราฟหุ้น มองว่าประกันให้ IRR ต่ำเตี้ย", fact: "ปีที่แล้วพอร์ตติดลบ 40% และไม่มีกองทุนค่ารักษาพยาบาลแยกไว้", obj: "เห็นด้วยว่าหุ้นกำไรดีกว่า และชวนคุยเรื่องกันชนป้องกันพอร์ตแตกเวลานอน รพ.", open: "บอกตรงๆ นะครับ ประกันผลตอบแทนแพ้เงินเฟ้อ ผมเอาเงินไปเทรดหุ้นได้ปีละ 15-20% จะทำประกันไปทำไมครับ?", dir: "ปูแนวคิดการปกป้องพอร์ตการลงทุน (Wealth Protection)" },
+      { n: 10, diff: 4, title: "ด่าน 10: ศึกชิงกระเป๋าตังค์ สามีพยักหน้าแต่ภรรยาตาเขียว!", cust: "พี่ต้นสายพยักหน้า & ซ้อจอย รมว.คลัง", age: 36, job: "วิศวกร & พนักงานบัญชี", persona: "พี่ต้นอยากทำ แต่ซ้อจอยผู้กุมกระเป๋าเงินของบ้านนั่งหน้าตึง", fact: "เพิ่งมีลูกวัย 1 ขวบ ซ้อจอยกังวลสภาพคล่องรายเดือนและค่าเทอมลูก", obj: "ยกย่องซ้อจอยในฐานะขุนคลังของบ้าน และชวนวางแผนที่ไม่กระทบสภาพคล่อง", open: "ซ้อจอย: พี่ต้นนั่นแหละไปนัดคุณมาเอง! จอยบอกแล้วว่าค่านมลูกก็เยอะแล้ว ไม่อยากมีภาระเพิ่มค่ะ!", dir: "สำรวจงบประมาณครอบครัวและทุนการศึกษาลูก" },
+      { n: 11, diff: 2, title: "ด่าน 11: วัยรุ่น 24 ขวบ 'ผมเตะบอลทุกวีค ไม่ป่วยหรอกพี่!'", cust: "น้องเอิร์ธ ปาร์ตี้บอย", age: 24, job: "กราฟิกดีไซเนอร์", persona: "ร่าเริง คิดว่าประกันเป็นเรื่องของคนแก่", fact: "สวัสดิการบริษัทมีค่าห้องให้แค่คืนละ 1,500 บาท", obj: "ชวนเทียบค่าห้องสวัสดิการกับ รพ.เอกชนจริง และข้อดีของการล็อกเบี้ยถูกตอนอายุ 24", open: "โหพี่! ผมเพิ่ง 24 เอง เตะบอลทุกอาทิตย์ แข็งแรงมาก รออายุ 40 ค่อยทำไม่ดีกว่าเหรอครับ?", dir: "อุดรอยรั่วสวัสดิการบริษัทตอนอายุน้อย" },
+      { n: 12, diff: 3, title: "ด่าน 12: เสี่ยภาณุสายด่วนสรรพากร 'กางตารางลดภาษีมาเลย!'", cust: "เสี่ยภาณุ สายด่วนสรรพากร", age: 44, job: "เจ้าของธุรกิจนำเข้า", persona: "ใจร้อน จะเอาแต่ตารางลดภาษี 3 แสนเดี๋ยวนั้น", fact: "เคยซื้อตัวลดภาษีแบบจ่ายยาวแล้วหมุนเงินไม่ทันจนต้องเวนคืนขาดทุน", obj: "เบรกความใจร้อนอย่างนุ่มนวล ขอถามฐานภาษีและกระแสเงินสด 5 นาที", open: "ไม่ต้องถามเยอะครับน้อง! พี่ต้องการลดภาษี 3 แสนภายในอาทิตย์นี้ ตัวไหนคุ้มสุดกางตารางมาเลย!", dir: "ทำ Fact-Finding ฐานภาษีและกระแสเงินสดก่อน" },
+      { n: 13, diff: 3, title: "ด่าน 13: ความลับระดับชาติ 'ถามเงินเดือนพี่ทำไมคะ?!'", cust: "คุณแพรว สายลับจัดซื้อ", age: 38, job: "ผู้จัดการฝ่ายจัดซื้อ", persona: "หวงตัวเลขเงินเดือนและเงินเก็บมาก", fact: "รายได้ปีละ 1.8 ล้าน ผ่อนคอนโดเดือนละ 25,000 บาท", obj: "ใช้เทคนิคถามเป็นช่วงตัวเลข (Range Questioning) พร้อมบอกเหตุผลก่อนถาม", open: "อุ๊ย... เรื่องเงินเดือนกับเงินเก็บในบัญชี แพรวว่ามันเป็นความลับส่วนตัวนะคะ ต้องบอกด้วยเหรอคะ?", dir: "เก็บข้อมูลโครงสร้างรายได้แบบช่วงตัวเลข" },
+      { n: 14, diff: 3, title: "ด่าน 14: พี่เดี่ยวเดอะแบก ลูกแฝดสอง เมียหนึ่ง บ้านอีกหลัง!", cust: "พี่เดี่ยว แบกโลกไว้คนเดียว", age: 40, job: "หัวหน้าวิศวกรโยธา", persona: "ทำงานหาเงินคนเดียวของบ้าน คิดว่าตัวเองไม่มีวันล้ม", fact: "หนี้บ้าน 4.5 ล้าน ค่าใช้จ่ายบ้านเดือนละ 60,000 แต่มีทุนประกันแค่ 5 แสน", obj: "ถามเปิดใจให้ตระหนักถึงตัวเลขหนี้บ้านและค่าใช้จ่ายลูกแฝดหากต้องพักงาน", open: "บ้านพี่สบายดีครับ พี่ลุยงานคนเดียวไหวสบายมาก เมียเลี้ยงลูกแฝดอยู่บ้านไม่ต้องห่วงเลย!", dir: "ค้นหาทุนประกันคุ้มครองรายได้ครอบครัวและหนี้บ้าน" },
+      { n: 15, diff: 3, title: "ด่าน 15: สาวครีเอทีฟมั่นใจบัตรทองออฟฟิศ (แต่อยากนอน รพ.หรู)", cust: "คุณต่าย บัตรกลุ่มคุ้มกะลาหัว", age: 32, job: "Creative Director", persona: "เชื่อว่าบัตรประกันกลุ่มออฟฟิศเบิกได้หมด แต่ชอบเข้า รพ.ห้าดาว", fact: "คุณลุงเพิ่งป่วยมะเร็งหมดไป 2 ล้าน ส่วนบัตรออฟฟิศเบิกได้แค่ 40,000 บาท", obj: "ถามเปรียบเทียบ รพ.ที่ชอบเข้า กับวงเงินบัตรกลุ่มเมื่อเกิดโรคร้ายแรง", open: "เรื่องค่ารักษาต่ายชิลล์มากค่ะ มีบัตรประกันกลุ่มของบริษัทอยู่แล้ว ยื่นบัตรใบเดียวจบ!", dir: "ค้นหาช่องว่างค่ารักษาเหมาจ่ายและโรคร้ายแรง" },
+      { n: 16, diff: 4, title: "ด่าน 16: พี่นกสาวโสดสตรอง ขึ้นคานทองอย่างสง่างาม", cust: "พี่นก โสดโปรดชิลล์", age: 43, job: "HR Manager", persona: "โสดสนิท คิดว่าไม่มีลูกก็ไม่ต้องวางแผนเยอะ", fact: "ต้องใช้เงินหลังเกษียณ 12 ล้านบาท (เดือนละ 40,000 x 25 ปี) แต่มี PVD แค่ 1.5 ล้าน", obj: "ชวนกดเครื่องคิดเลขคำนวณเงินเกษียณ 25 ปี (12 ล้านบาท)", open: "พี่โสดสนิทจ้ะน้อง ไม่มีลูกให้ห่วง เงินในกองทุนสำรองเลี้ยงชีพก็น่าจะพอใช้แล้วมั้งคะ", dir: "ค้นหาเป้าหมายเงินบำนาญการันตีหลังเกษียณ" },
+      { n: 17, diff: 4, title: "ด่าน 17: เฮียเจตน์ลูกชิ้นหมูเด้ง กู้ 15 ล้าน เอาบ้านเมียไปค้ำ!", cust: "เฮียเจตน์ ลูกชิ้นหมูเด้งพันล้าน", age: 48, job: "เจ้าของโรงงานอาหาร", persona: "เพิ่งกู้แบงก์ 15 ล้านมาลงเครื่องจักรใหม่", fact: "เอาบ้านที่ภรรยาและลูกอยู่ไปจำนองค้ำเงินกู้โรงงาน 15 ล้าน", obj: "ค้นหาภาระค้ำประกันและชี้ให้เห็นการแยกความเสี่ยงธุรกิจออกจากบ้านครอบครัว", open: "ตอนนี้เงินทุกบาทเฮียทุ่มลงเครื่องจักรปั้นลูกชิ้นใหม่หมดเลย! อีก 5 ปีคืนทุนรวยเละ!", dir: "ประกันคุ้มครองวงเงินสินเชื่อธุรกิจ (Keyman)" },
+      { n: 18, diff: 3, title: "ด่าน 18: หมอภูมิคุณพ่อสายเปย์ จะส่งลูกสาวเรียนอังกฤษ!", cust: "ทพ.ภูมิ คุณพ่อสายเปย์", age: 39, job: "ทันตแพทย์", persona: "รักลูกสาววัย 3 ขวบมาก ตั้งใจส่งเรียนปริญญาที่ลอนดอน", fact: "เก็บเงินลูกปนในพอร์ตหุ้น ยังไม่มีระบบคุ้มครองผู้ชำระเบี้ย (Payer Benefit)", obj: "ชี้ให้เห็นความสำคัญของกองทุนที่บริษัทออมต่อให้อัตโนมัติหากพ่อแม่เจ็บป่วย", open: "เรื่องค่าเทอมลูกสาวไปเรียนอังกฤษ หมอทยอยซื้อหุ้นปันผลเก็บไว้ให้เขาทุกเดือนอยู่แล้วครับ", dir: "แผนออมเพื่อการศึกษาบุตรพ่วง Payer Benefit" },
+      { n: 19, diff: 5, title: "ด่าน 19: คุณหญิงรัตนาโฉนดทองคำ ที่ดิน 80 ล้านแบ่งลูกไม่ลงตัว!", cust: "คุณหญิงรัตนา โฉนดทองคำ", age: 61, job: "เศรษฐีนีอสังหาฯ", persona: "มีที่ดิน 80 ล้าน แต่มีเงินสดสภาพคล่องน้อย", fact: "ลูก 3 คนแบ่งที่ดินแปลงสวยยาก และยังไม่มีเงินสดจ่ายค่าโอน/ภาษีมรดก", obj: "สำรวจสัดส่วนที่ดินเทียบกับเงินสด เพื่อสร้างกองทุนมรดกเงินสดปลอดภาษี", open: "ป้าเตรียมโฉนดที่ดินไว้ให้ลูกๆ ทั้ง 3 คนครบหมดแล้วจ้ะ มูลค่าตั้ง 80 ล้าน สบายแน่นอน", dir: "กองทุนมรดกเงินสดปลอดภาษีเพื่อทายาท" },
+      { n: 20, diff: 4, title: "ด่าน 20: ชี้เป้าหน้างาน! ฟรีแลนซ์เงินเก็บ 3 แสน จะซื้อออมทรัพย์", cust: "คุณกิตติ ฟรีแลนซ์สายออม", age: 33, job: "Freelance Developer", persona: "เงินเก็บ 3 แสน ไม่มีสวัสดิการเลย แต่จะทำออมทรัพย์", fact: "ถ้าป่วยผ่าตัดครั้งเดียว เงินเก็บ 3 แสนจะหายวับทันที", obj: "สรุปหน้างานว่าต้องทำหมวดสุขภาพเหมาจ่าย+โรคร้ายแรงเพื่อล็อกเงินเก็บ 3 แสนก่อน", open: "จากที่ผมมีเงินเก็บ 3 แสนและไม่มีสวัสดิการเลย... คุณคิดว่าผมควรทำออมทรัพย์ตัวไหนดีครับ?", dir: "หมวดประกันสุขภาพเหมาจ่ายและโรคร้ายแรง" },
+      { n: 21, diff: 4, title: "ด่าน 21: ชี้เป้าหน้างาน! สวัสดิการค่ารักษาเทพ แต่หนี้บ้าน 3.5 ล้าน", cust: "คุณศักดิ์ สวัสดิการเทพ", age: 41, job: "ผู้จัดการโรงงาน", persona: "ค่ารักษาบริษัทจ่าย 100% แต่มีหนี้บ้าน 3.5 ล้านและลูก 2 คน", fact: "มีทุนประกันชีวิตแค่ 3 แสน แต่ภาระครอบครัวรวม 6 ล้านบาท", obj: "วิเคราะห์ชี้เป้าหมวดประกันชีวิตเน้นความคุ้มครองสูง (High Protection) 5-6 ล้าน", open: "ค่ารักษาพยาบาลบริษัทพี่จ่ายไม่อั้นอยู่แล้ว แล้วแบบนี้พี่ควรวางแผนหมวดไหนล่ะครับ?", dir: "หมวดประกันชีวิตเน้นความคุ้มครองรายได้ครอบครัว" },
+      { n: 22, diff: 4, title: "ด่าน 22: ชี้เป้าหน้างาน! ผอ.บัญชีฐานภาษี 25% แสนแรกเต็มแล้ว", cust: "ผอ.นิภา บัญชีเป๊ะเวอร์", age: 45, job: "ผู้อำนวยการฝ่ายบัญชี", persona: "โสด สุขภาพครบ แสนแรกเต็ม เสียภาษีฐาน 25%", fact: "ยังไม่ได้ใช้สิทธิ์บำนาญ 200,000 บาทหลัง (ประหยัดภาษีได้ปีละ 50,000 บาท)", obj: "ชี้เป้าหมวดประกันบำนาญลดหย่อนภาษี รับเงินคืนภาษี 25% และล็อกบำนาญ", open: "สุขภาพกับประกันแสนแรกพี่เต็มหมดแล้วค่ะ ดูจากฐานภาษี 25% พี่ควรวางหมวดไหนต่อคะ?", dir: "หมวดประกันบำนาญลดหย่อนภาษี (Annuity)" },
+      { n: 23, diff: 5, title: "ด่าน 23: ชี้เป้าหน้างาน! งบ 2,500 บาท แต่อยากออมให้ลูก 100%", cust: "ช่างบอย รักลูกสุดหัวใจ", age: 35, job: "หัวหน้าช่างเทคนิค", persona: "เสาหลักของบ้าน งบ 2,500 บาท/เดือน อยากทำออมทรัพย์ชื่อลูก", fact: "ตัวเองไม่มีประกันเลย ถ้าพ่อเป็นอะไรไป ลูกจะไม่มีเงินเรียนต่อทันที", obj: "เปรียบเทียบว่าพ่อคือตู้ ATM ของลูก ต้องจัดงบ 2,500 คุ้มครองชีวิตเสาหลักก่อน", open: "พี่มีงบเดือนละ 2,500 บาท อยากทำออมทรัพย์ชื่อลูก 100% เลย น้องวิเคราะห์ว่าดีไหมครับ?", dir: "หมวดคุ้มครองเสาหลักครอบครัวและโรคร้ายแรง" },
+      { n: 24, diff: 5, title: "ด่าน 24: ชี้เป้าหน้างาน! หนุ่ม Tech อยากได้เล่มเดียวปรับได้ทุกวัย", cust: "คุณภัทร สายเทคฯ ยืดหยุ่น", age: 29, job: "Tech Product Manager", persona: "เข้าใจกองทุนรวม อยากได้เล่มเดียวที่ปรับทุนประกันและลงทุนได้", fact: "ต้องการทั้งความคุ้มครองสูงที่ยืดหยุ่นและโอกาสเติบโตในกองทุนรวม", obj: "ชี้เป้าหมวดประกันชีวิตควบการลงทุน (Unit Linked / แผนยืดหยุ่น)", open: "ผมไม่อยากซื้อหลายเล่ม อยากได้โครงสร้างที่ปรับตามช่วงอายุได้และโตไปกับกองทุนรวม แนะนำหมวดไหนครับ?", dir: "หมวดประกันชีวิตควบการลงทุน (Unit Linked)" },
+      { n: 25, diff: 5, title: "ด่าน 25 (บอสใหญ่): เจ้าสัวมังกรทอง กรมธรรม์ 99 เล่ม!", cust: "เจ้าสัวธนินทร์ มังกรทองคำ", age: 58, job: "ประธานอาณาจักรโลจิสติกส์", persona: "บอสใหญ่ 5 ดาว ต้องการฟังการสรุปภาพรวม 3 เสาหลักในคราวเดียว", fact: "มีโจทย์ 3 มิติ: 1) Keyman บริษัท 2) สุขภาพ VIP ทั่วโลก 3) มรดกเงินสดให้ลูก 2 คน", obj: "สรุป Holistic 3 เสาหลักอย่างสง่างามจนเจ้าสัวยอมรับเป็นที่ปรึกษาประจำตระกูล", open: "อั๊วฟังลื้อถามข้อมูลมาเยอะแล้ว... ไหนลองสรุปให้ฟังชัดๆ ซิว่า อาณาจักรของอั๊วต้องวางโครงสร้างประกัน 3 เสาหลักยังไงบ้าง?", dir: "แผน Holistic 3 เสาหลัก (VIP Health + Keyman + Estate)" }
+    ];
+
+    // คู่แข่งในตารางศึกชิงแชมป์ Top 1-10
+    const RIVALS = [
+      { name: "พี่เอก ซอยอารีย์", title: "แชมป์เก่าสายพูดหวาน", emoji: "🦁", pts: 1890, best: 95, attempts: 28, cleared: 22 },
+      { name: "เจ๊บุ๋ม ทองหล่อ", title: "นักปิดการขายความเร็วแสง", emoji: "🦊", pts: 1740, best: 93, attempts: 25, cleared: 20 },
+      { name: "โค้ชบาส สาทร", title: "ปรมาจารย์ Fact-Finding", emoji: "🦅", pts: 1580, best: 91, attempts: 22, cleared: 18 },
+      { name: "น้องมายด์ รัชดา", title: "ดาวรุ่งเสียงใสใจเกินร้อย", emoji: "🐰", pts: 1390, best: 89, attempts: 19, cleared: 16 },
+      { name: "เฮียตี๋ เยาวราช", title: "ผู้ปราบเจ้าสัวร้อยล้าน", emoji: "🐼", pts: 1210, best: 87, attempts: 16, cleared: 14 },
+      { name: "คุณก้อง สีลม", title: "สไนเปอร์ Cold Call", emoji: "🐯", pts: 980, best: 85, attempts: 13, cleared: 11 },
+      { name: "ป้าหน่อย บางนา", title: "นักซ้อมสายถึกประจำทีม", emoji: "🐨", pts: 790, best: 83, attempts: 10, cleared: 9 },
+      { name: "น้องท็อป ลาดพร้าว", title: "จอมยุทธ์ไมค์ทองคำ", emoji: "🐸", pts: 560, best: 81, attempts: 7, cleared: 6 },
+      { name: "คุณแนน พระราม 9", title: "มือใหม่ไฟแรงแซงทางโค้ง", emoji: "🐱", pts: 320, best: 78, attempts: 4, cleared: 4 }
+    ];
+
+    let currentStage = STAGES[0];
+    let chatTurns = [];
+    let stageBestScores = { 1: 86, 2: 84 };
+    let stageAttemptsCount = { 1: 1, 2: 1 };
+    let totalAttemptsCount = 2;
+    let triggeredFastWpm = false;
+    let triggeredQuietVoice = false;
+    let equippedTitle = "จอมยุทธ์ไมค์ทองคำ";
+
+    let trustScore = 60;
+    let comboCount = 0;
+    let bgmEnabled = false;
+    let ttsEnabled = true;
+    let autoHandsFree = true;
+    let isCustomerSpeaking = false;
+    let isAgentSpeaking = false;
+    let customerMouthOpen = 0;
+    let agentMouthOpen = 0;
+    let customerViseme = 'CLOSED';
+    let agentViseme = 'SMILE';
+    let isRecordingMic = false;
+    let speechRecognition = null;
+    let debounceTimer = null;
+    let pendingRecognizedText = '';
+    let recognitionStartTime = 0;
+    let audioCtx = null;
+    let bgmTimer = null;
+
+    // ==================== GEMINI 3.5 FLASH-LITE FREE TIER QUOTA & THAILAND RESET TIME (00:00 PT = 15:00 น. เวลาไทย) ====================
+    const MAX_DAILY_FREE_RPD = 1000;
+    let usedDailyRpd = 4;
+
+    function getThailandQuotaResetInfo() {
+      const now = new Date();
+      // คำนวณเวลาเที่ยงคืนถัดไปของแปซิฟิก (00:00 PT - America/Los_Angeles)
+      const ptFormatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Los_Angeles',
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      });
+      const parts = Object.fromEntries(ptFormatter.formatToParts(now).map(p => [p.type, p.value]));
+      const ptHours = parseInt(parts.hour, 10) || 0;
+      const ptMins = parseInt(parts.minute, 10) || 0;
+      const ptSecs = parseInt(parts.second, 10) || 0;
+      const secondsUntilPtMidnight = Math.max(60, (24 * 3600) - (ptHours * 3600 + ptMins * 60 + ptSecs));
+      const resetDate = new Date(now.getTime() + secondsUntilPtMidnight * 1000);
+
+      // แปลงเป็นเวลาประเทศไทย (Asia/Bangkok, UTC+7)
+      const thTimeStr = new Intl.DateTimeFormat('th-TH', {
+        timeZone: 'Asia/Bangkok',
+        hour: '2-digit', minute: '2-digit', hour12: false
+      }).format(resetDate);
+      const thDateStr = new Intl.DateTimeFormat('th-TH', {
+        timeZone: 'Asia/Bangkok',
+        day: 'numeric', month: 'short'
+      }).format(resetDate);
+
+      const hoursLeft = Math.floor(secondsUntilPtMidnight / 3600);
+      const minsLeft = Math.floor((secondsUntilPtMidnight % 3600) / 60);
+      const remaining = Math.max(0, MAX_DAILY_FREE_RPD - usedDailyRpd);
+      return {
+        remaining,
+        used: usedDailyRpd,
+        max: MAX_DAILY_FREE_RPD,
+        thTimeLabel: `${thTimeStr} น. (เวลาไทย)`,
+        thFullLabel: `วันที่ ${thDateStr} เวลา ${thTimeStr} น. (บ่ายโมง/บ่ายสามตามเวลาแปซิฟิก 00:00 PT)`,
+        countdownLabel: `อีก ${hoursLeft} ชั่วโมง ${minsLeft} นาที`,
+        isExhausted: remaining <= 0
+      };
+    }
+
+    function updateQuotaBadgeUI() {
+      const info = getThailandQuotaResetInfo();
+      const badge = document.getElementById('aiEngineBadge');
+      if (!badge) return;
+      if (info.isExhausted) {
+        badge.textContent = `⏰ โควต้าฟรีวันนี้ครบแล้ว • มาต่อพรุ่งนี้ ${info.thTimeLabel} (${info.countdownLabel})`;
+        badge.style.background = 'rgba(244,63,94,0.22)';
+        badge.style.color = '#FDA4AF';
+        badge.style.borderColor = 'var(--coral)';
+      } else {
+        badge.textContent = `✨ Gemini 3.5 Flash-Lite (${info.remaining}/${info.max} ครั้ง • รีเซ็ต ${info.thTimeLabel})`;
+        badge.style.background = 'rgba(34,211,238,0.16)';
+        badge.style.color = 'var(--cyan)';
+        badge.style.borderColor = 'rgba(34,211,238,0.4)';
+      }
+    }
+
+    function openQuotaResetModal() {
+      const info = getThailandQuotaResetInfo();
+      showSimpleModal(
+        `🛡️ โควต้าฟรี Gemini API & เวลารีเซ็ตประจำวัน`,
+        `<div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="background:rgba(16,185,129,0.14);border:1px solid var(--emerald);padding:10px 12px;border-radius:12px;">
+            <strong style="color:var(--emerald);">✅ รับประกันค่าใช้จ่าย 0.00 บาท 100%</strong>
+            <div style="font-size:0.82rem;color:var(--text);margin-top:3px;">ระบบล็อกโควต้าไม่ให้เกิน Free Tier เด็ดขาด ไม่มีการคิดเงินเพิ่ม</div>
+          </div>
+          <p>📊 <strong>โควต้าฟรีวันนี้คงเหลือ:</strong> <span style="color:var(--gold);font-weight:800;">${info.remaining} / ${info.max} ครั้ง</span> (ใช้ไป ${info.used} ครั้ง)</p>
+          <p>🕒 <strong>เวลารีเซ็ตโควต้าฟรีรอบถัดไป:</strong><br>
+             <span style="color:var(--cyan);font-weight:700;">${info.thFullLabel}</span><br>
+             <span style="color:var(--gold);font-weight:700;">⏳ นับถอยหลัง: ${info.countdownLabel}</span></p>
+          <p style="font-size:0.8rem;color:var(--muted);">💡 หมายเหตุ: Google รีเซ็ตโควต้าฟรี Gemini API ทุกวันเวลาเที่ยงคืนแปซิฟิก (00:00 PT) ซึ่งตรงกับเวลา <strong>15:00 น. (บ่าย 3 โมงตรง เวลาประเทศไทย)</strong> ในช่วงฤดูหนาว (พ.ย.–มี.ค.) และ <strong>14:00 น.</strong> ในช่วงฤดูร้อน (มี.ค.–พ.ย.)</p>
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+            <button class="tab-btn" style="border-color:var(--coral);color:#FDA4AF;flex:1;" onclick="simulateQuotaExhaustedPopup()">🔔 ทดสอบแจ้งเตือนโควต้าหมด</button>
+            <button class="tab-btn active" style="flex:1;" onclick="resetQuotaCounterDemo()">🔄 รีเซ็ตตัวนับโควต้า (250/250)</button>
+          </div>
+        </div>`
+      );
+    }
+
+    function simulateQuotaExhaustedPopup() {
+      usedDailyRpd = MAX_DAILY_FREE_RPD;
+      updateQuotaBadgeUI();
+      const info = getThailandQuotaResetInfo();
+      showSimpleModal(
+        `⏰ แจ้งเตือนโควต้าฟรี Gemini API วันนี้ครบแล้ว!`,
+        `<div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="background:rgba(244,63,94,0.18);border:1px solid var(--coral);padding:12px;border-radius:12px;">
+            <div style="color:#FDA4AF;font-weight:800;font-size:0.96rem;margin-bottom:4px;">🚫 ระบบตัดการทำงานอัตโนมัติเพื่อป้องกันค่าใช้จ่าย (0.00฿)</div>
+            <div style="font-size:0.86rem;">โควต้าฟรีประจำวันของ Gemini API (250 ครั้ง/วัน) ถูกใช้งานครบแล้ว</div>
+          </div>
+          <div style="background:rgba(244,196,48,0.15);border:1px solid var(--gold);padding:12px;border-radius:12px;">
+            <div style="color:var(--gold);font-weight:800;font-size:0.95rem;">📅 มาเล่นด้วย Gemini API ต่อได้ในวันพรุ่งนี้กี่โมง?</div>
+            <div style="font-size:1.05rem;font-weight:800;color:var(--cyan);margin:4px 0;">👉 มาต่อได้ใน ${info.thFullLabel}</div>
+            <div style="font-size:0.86rem;color:var(--emerald);font-weight:700;">⏳ เหลือเวลารอรีเซ็ตโควต้าฟรี: ${info.countdownLabel} (รีเซ็ตทุกวันเวลา 00:00 PT / บ่าย 3 โมงเวลาไทย)</div>
+          </div>
+          <p style="font-size:0.85rem;color:var(--muted);">💡 ระหว่างรอโควต้าฟรี Gemini API รีเซ็ตในวันพรุ่งนี้ ระบบได้สลับเป็น <strong>AI สำรองฝังในแอพ (On-Device AI)</strong> ให้คุณฝึกซ้อมต่อได้ทันทีโดยไม่เสียค่าใช้จ่าย!</p>
+          <div style="display:flex;gap:8px;margin-top:4px;">
+            <button class="send-btn" style="flex:1;" onclick="closeModal()">รับทราบ (ซ้อมต่อด้วย AI สำรองฟรี)</button>
+            <button class="tab-btn" onclick="resetQuotaCounterDemo()">🔄 คืนโควต้าทดสอบ</button>
+          </div>
+        </div>`
+      );
+    }
+
+    function resetQuotaCounterDemo() {
+      usedDailyRpd = 0;
+      updateQuotaBadgeUI();
+      closeModal();
+    }
+
+    function ensureAudioCtx() {
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playTone(freq, durationMs, vol = 0.08) {
+      try {
+        ensureAudioCtx();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + durationMs / 1000);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + durationMs / 1000 + 0.02);
+      } catch (e) {}
+    }
+
+    // Audio Feedback Patterns สำหรับระบบ Voice Coaching
+    function playFastSpeechPattern() {
+      [783.99, 587.33, 440.00].forEach((f, i) => setTimeout(() => playTone(f, 140, 0.12), i * 160));
+    }
+    function playQuietVoicePattern() {
+      [349.23, 698.46].forEach((f, i) => setTimeout(() => playTone(f, 160, 0.13), i * 170));
+    }
+    function playBalancedVoicePattern() {
+      [523.25, 783.99].forEach((f, i) => setTimeout(() => playTone(f, 110, 0.09), i * 110));
+    }
+
+    function toggleBgm() {
+      bgmEnabled = !bgmEnabled;
+      document.getElementById('bgmBtn').style.borderColor = bgmEnabled ? 'var(--gold)' : 'rgba(255,255,255,0.16)';
+      if (bgmEnabled) {
+        const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 440.00, 392.00];
+        let idx = 0;
+        bgmTimer = setInterval(() => {
+          // Auto-Ducking: ปิดเสียง BGM ชั่วคราวเมื่อไมโครโฟนเปิดรับเสียงหรือลูกค้ากำลังพูด
+          if (bgmEnabled && !isRecordingMic && !isCustomerSpeaking) {
+            playTone(notes[idx++ % notes.length], 500, 0.022);
+          }
+        }, 750);
+      } else if (bgmTimer) {
+        clearInterval(bgmTimer);
+        bgmTimer = null;
+      }
+    }
+
+    function toggleCustomerTts() {
+      ttsEnabled = !ttsEnabled;
+      document.getElementById('ttsBtn').style.borderColor = ttsEnabled ? 'var(--cyan)' : 'rgba(255,255,255,0.16)';
+      if (!ttsEnabled && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+    }
+
+    function toggleAutoHandsFree() {
+      autoHandsFree = !autoHandsFree;
+      const btn = document.getElementById('autoCallToggleBtn');
+      btn.textContent = autoHandsFree ? '🟢 คุยสดต่อเนื่องอัตโนมัติ: เปิด' : '⚪ คุยสดต่อเนื่องอัตโนมัติ: ปิด';
+      btn.style.color = autoHandsFree ? 'var(--emerald)' : 'var(--muted)';
+    }
+
+    function getStageRank(stageNum) {
+      const myBest = stageBestScores[stageNum] || 0;
+      if (myBest === 0) return 10;
+      let betterCount = 0;
+      RIVALS.forEach((r, idx) => {
+        const rScore = Math.max(64, Math.min(96, r.best - ((stageNum * 3 + idx * 4) % 24)));
+        if (rScore > myBest) betterCount++;
+      });
+      return 1 + betterCount;
+    }
+
+    function renderStageList() {
+      const container = document.getElementById('stageListContainer');
+      const passedCount = Object.values(stageBestScores).filter(s => s >= 70).length;
+      document.getElementById('stageProgressText').textContent = `ผ่าน ${passedCount}/25 ด่าน`;
+      container.innerHTML = STAGES.map(s => {
+        const best = stageBestScores[s.n];
+        const rank = getStageRank(s.n);
+        return `
+        <div class="stage-item ${s.n === currentStage.n ? 'active' : ''}" onclick="selectStage(${s.n})">
+          <div style="display:flex;align-items:center;gap:9px;overflow:hidden;">
+            <div class="stage-num" style="${best>=70?'background:rgba(16,185,129,0.22);color:var(--emerald);':''}">${s.n}</div>
+            <div style="overflow:hidden;">
+              <div style="font-weight:700;font-size:0.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.title.split(': ')[1] || s.title}</div>
+              <div style="font-size:0.72rem;color:var(--muted);">👤 ${s.cust} • อันดับ #${rank} ${best ? `• 🏆${best}` : ''}</div>
+            </div>
+          </div>
+          <button class="icon-btn" style="width:28px;height:28px;font-size:0.78rem;flex-shrink:0;" onclick="event.stopPropagation();selectStage(${s.n});openStageInfoModal();">ℹ️</button>
+        </div>
+      `}).join('');
+    }
+
+    function selectStage(num) {
+      currentStage = STAGES.find(s => s.n === num) || STAGES[0];
+      trustScore = Math.max(42, 65 - currentStage.diff * 4);
+      comboCount = 0;
+      chatTurns = [
+        { isAgent: false, text: currentStage.open, tip: `🎯 ภารกิจ: ${currentStage.obj}` }
+      ];
+      const rank = getStageRank(currentStage.n);
+      document.getElementById('activeStageHeaderLabel').textContent = `ด่านที่ ${currentStage.n}/25 • ${'★'.repeat(currentStage.diff)} • อันดับของคุณ #${rank}`;
+      document.getElementById('activeStageTitle').textContent = currentStage.title;
+      document.getElementById('trustScoreText').textContent = trustScore + '%';
+      document.getElementById('comboPill').style.display = 'none';
+      updateQuotaBadgeUI();
+      renderStageList();
+      renderChat();
+      speakCustomerWithLipSync(currentStage.open, false);
+    }
+
+    // ==================== STRICT HALF-DUPLEX TTS + 450ms ECHO COOLDOWN GATE ====================
+    function speakCustomerWithLipSync(text, autoOpenMicAfter = true) {
+      // ปิดไมค์ทันทีขณะลูกค้าพูดเพื่อป้องกันเสียงลำโพงไหลเข้าไมโครโฟน 100%
+      if (isRecordingMic) {
+        try { if (speechRecognition) speechRecognition.abort(); } catch (e) {}
+        stopMicRecognitionUI();
+      }
+      isCustomerSpeaking = true;
+      document.getElementById('liveCallStatusBanner').textContent = `🔊 ${currentStage.cust.split(' ')[0]} กำลังพูดโต้ตอบ... (ระบบปิดไมค์ชั่วคราวกันเสียงสะท้อน)`;
+
+      const hasNativeTts = ttsEnabled && ('speechSynthesis' in window);
+      let ttsFinished = false;
+
+      const onSpeechComplete = () => {
+        if (ttsFinished) return;
+        ttsFinished = true;
+        isCustomerSpeaking = false;
+        customerMouthOpen = 0;
+        customerViseme = 'CLOSED';
+
+        if (autoOpenMicAfter && autoHandsFree) {
+          document.getElementById('liveCallStatusBanner').textContent = '🛡️ รอเสียงลำโพงซา 0.45 วินาที (Half-Duplex Echo Gate)...';
+          setTimeout(() => {
+            if (!isCustomerSpeaking && !isRecordingMic && autoHandsFree) {
+              startRealTimeSpeechRecognition();
+            }
+          }, 450);
+        } else {
+          document.getElementById('liveCallStatusBanner').textContent = '🎙️ ตาคุณพูดโต้ตอบสด! (กดไมค์ 🎙️ หรือพูดใส่ไมค์ได้เลย)';
+        }
+      };
+
+      if (hasNativeTts) {
+        try {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'th-TH';
+          u.rate = 1.04;
+          u.onend = onSpeechComplete;
+          u.onerror = onSpeechComplete;
+          window.speechSynthesis.speak(u);
+        } catch (e) {
+          onSpeechComplete();
+        }
+      }
+
+      const durationMs = Math.min(6200, Math.max(1800, text.length * 52));
+      const start = performance.now();
+      const visemes = ['SLIGHT_OPEN', 'WIDE_AH', 'ROUND_OH', 'CLOSED'];
+      let step = 0;
+      const timer = setInterval(() => {
+        const elapsed = performance.now() - start;
+        if (ttsFinished || elapsed >= durationMs) {
+          clearInterval(timer);
+          onSpeechComplete();
+          return;
+        }
+        step++;
+        customerViseme = visemes[step % visemes.length];
+        customerMouthOpen = customerViseme === 'WIDE_AH' ? 0.9 : customerViseme === 'ROUND_OH' ? 0.65 : customerViseme === 'SLIGHT_OPEN' ? 0.4 : 0.08;
+        // เล่นเสียงสังเคราะห์เฉพาะกรณีเบราว์เซอร์ไม่มี Native TTS เท่านั้น เพื่อไม่ให้เสียงตีกัน
+        if (!hasNativeTts && ttsEnabled && step % 2 === 0 && customerViseme !== 'CLOSED') {
+          playTone(175 + (step % 5) * 18, 45, 0.025);
+        }
+      }, 65);
+    }
+
+    function replayLastCustomerSpeech() {
+      const lastCust = [...chatTurns].reverse().find(t => !t.isAgent);
+      if (lastCust) speakCustomerWithLipSync(lastCust.text, false);
+    }
+
+    function animateAgentLipSync(text, cb) {
+      isAgentSpeaking = true;
+      const durationMs = Math.min(1100, Math.max(550, text.length * 24));
+      const start = performance.now();
+      let step = 0;
+      const timer = setInterval(() => {
+        if (performance.now() - start >= durationMs) {
+          clearInterval(timer);
+          isAgentSpeaking = false;
+          agentMouthOpen = 0;
+          agentViseme = 'SMILE';
+          if (cb) cb();
+          return;
+        }
+        step++;
+        agentMouthOpen = 0.35 + Math.abs(Math.sin(step * 0.9)) * 0.55;
+      }, 65);
+    }
+
+    // ==================== REAL-TIME SPEECH RECOGNITION + 1.2s SILENCE DEBOUNCE ====================
+    function startRealTimeSpeechRecognition() {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) {
+        alert("เบราว์เซอร์นี้ไม่รองรับ Web Speech API กรุณาใช้ปุ่มจำลองการพูดหรือพิมพ์ข้อความแทนครับ");
+        return;
+      }
+      if (isCustomerSpeaking) {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        isCustomerSpeaking = false;
+      }
+      try {
+        if (speechRecognition) speechRecognition.abort();
+        speechRecognition = new SR();
+        speechRecognition.lang = 'th-TH';
+        speechRecognition.interimResults = true;
+        speechRecognition.continuous = true;
+
+        recognitionStartTime = performance.now();
+        pendingRecognizedText = '';
+        isRecordingMic = true;
+        isAgentSpeaking = true;
+        document.getElementById('micBtn').classList.add('recording');
+        document.getElementById('liveCallStatusBanner').textContent = '🎙️ กำลังฟังเสียงคุณพูดสด... (เว้นจังหวะหายใจได้ ระบบรอ 1.2 วินาทีก่อนส่ง)';
+
+        speechRecognition.onresult = (event) => {
+          let combined = '';
+          for (let i = 0; i < event.results.length; ++i) {
+            combined += event.results[i][0].transcript + ' ';
+          }
+          const currentText = combined.trim();
+          if (!currentText) return;
+
+          pendingRecognizedText = currentText;
+          agentMouthOpen = 0.4 + Math.random() * 0.5;
+          document.getElementById('speechInput').value = currentText;
+          document.getElementById('flushSpeechBtn').style.display = 'inline-flex';
+          document.getElementById('liveCallStatusBanner').textContent = `⏳ กำลังฟังสด (รอจังหวะหายใจ 1.2 วิ): "${currentText}"`;
+
+          if (debounceTimer) clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+            flushPendingSpeechNow();
+          }, 1250);
+        };
+
+        speechRecognition.onerror = () => {
+          if (pendingRecognizedText) flushPendingSpeechNow();
+          else stopMicRecognitionUI();
+        };
+        speechRecognition.onend = () => {
+          if (pendingRecognizedText) flushPendingSpeechNow();
+          else stopMicRecognitionUI();
+        };
+        speechRecognition.start();
+      } catch (e) {
+        stopMicRecognitionUI();
+      }
+    }
+
+    function flushPendingSpeechNow() {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+        debounceTimer = null;
+      }
+      const finalSpeech = (pendingRecognizedText || document.getElementById('speechInput').value).trim();
+      pendingRecognizedText = '';
+      document.getElementById('speechInput').value = '';
+      document.getElementById('flushSpeechBtn').style.display = 'none';
+      try { if (speechRecognition) speechRecognition.stop(); } catch (e) {}
+      stopMicRecognitionUI();
+
+      if (finalSpeech) {
+        const elapsedSec = Math.max(1.8, (performance.now() - recognitionStartTime) / 1000);
+        const estWpm = Math.min(195, Math.max(95, Math.round(((finalSpeech.length / 3.8) / elapsedSec) * 60)));
+        processAgentTurnWithMetrics(finalSpeech, estWpm, estWpm > 165, finalSpeech.length <= 10);
+      }
+    }
+
+    function stopMicRecognitionUI() {
+      isRecordingMic = false;
+      isAgentSpeaking = false;
+      agentMouthOpen = 0;
+      document.getElementById('micBtn').classList.remove('recording');
+      document.getElementById('flushSpeechBtn').style.display = 'none';
+    }
+
+    function toggleMicRecording() {
+      if (isRecordingMic) {
+        flushPendingSpeechNow();
+      } else {
+        startRealTimeSpeechRecognition();
+      }
+    }
+
+    function simulateVoiceTurn(mode) {
+      if (mode === 'FAST_WPM') {
+        triggeredFastWpm = true;
+        const text = `สวัสดีครับคุณ${currentStage.cust.split(' ')[0]}ผมขอเวลาสั้นๆพูดเร็วๆเรื่องการวางแผน${currentStage.dir}ให้ฟังเดี๋ยวนี้เลยครับ!`;
+        animateAgentLipSync(text, () => processAgentTurnWithMetrics(text, 178, true, false));
+      } else if (mode === 'QUIET_VOICE') {
+        triggeredQuietVoice = true;
+        const text = `เอ่อ... ขออนุญาตสอบถามข้อมูลเรื่องความคุ้มครองนิดนึงนะครับ...`;
+        animateAgentLipSync(text, () => processAgentTurnWithMetrics(text, 118, false, true));
+      } else {
+        const text = `เข้าใจเลยครับคุณ${currentStage.cust.split(' ')[0]} วันนี้ผมไม่ได้มาเสนอขาย แต่ขออนุญาตชวนวางโครงสร้าง ${currentStage.dir} ให้ตอบโจทย์ครับ`;
+        animateAgentLipSync(text, () => processAgentTurnWithMetrics(text, 132, false, false));
+      }
+    }
+
+    function sendAgentSpeech() {
+      const input = document.getElementById('speechInput');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      pendingRecognizedText = '';
+      if (debounceTimer) clearTimeout(debounceTimer);
+      const estWpm = text.length > 135 ? 174 : 132;
+      const isFast = estWpm > 165;
+      const isQuiet = text.length <= 12;
+      if (isFast) triggeredFastWpm = true;
+      if (isQuiet) triggeredQuietVoice = true;
+      animateAgentLipSync(text, () => processAgentTurnWithMetrics(text, estWpm, isFast, isQuiet));
+    }
+
+    function processAgentTurnWithMetrics(text, wpm, isTooFast, isTooQuiet) {
+      // ตรวจสอบโควต้าฟรี Gemini API (250 ครั้ง/วัน)
+      if (usedDailyRpd < MAX_DAILY_FREE_RPD) {
+        usedDailyRpd++;
+        updateQuotaBadgeUI();
+        if (usedDailyRpd >= MAX_DAILY_FREE_RPD) {
+          simulateQuotaExhaustedPopup();
+        }
+      } else {
+        simulateQuotaExhaustedPopup();
+      }
+
+      let voiceCoachingTip = '';
+      if (isTooFast) {
+        playFastSpeechPattern();
+        voiceCoachingTip = `⚡ Voice Coaching Alert (พูดเร็ว ${wpm} WPM > 165): จังหวะการพูดเร็วเกินไป! แนะนำให้ลดความเร็วลง 15% ทอดเสียงคำลงท้ายให้นุ่มนวล และเว้นจังหวะท้ายประโยค 1 วินาที เพื่อเพิ่มคะแนน Voice Tone Score (+12 แต้ม)`;
+      } else if (isTooQuiet) {
+        playQuietVoicePattern();
+        voiceCoachingTip = `🔉 Voice Coaching Alert (เสียงเบาเกินไป): น้ำเสียงฟังดูไม่มั่นใจ แนะนำให้ยืดอก พูดเต็มเสียงจากกระบังลม และเน้นคำสำคัญ เพื่อเพิ่มคะแนน Voice Tone Score (+12 แต้ม)`;
+      } else {
+        playBalancedVoicePattern();
+        voiceCoachingTip = `✅ Voice Coaching (${wpm} WPM • น้ำเสียงสมดุล): จังหวะการพูดและความดังอยู่ในเกณฑ์มืออาชีพ ช่วยดันคะแนน Voice Tone Score ขึ้นสู่ระดับดีเยี่ยม!`;
+      }
+
+      chatTurns.push({
+        isAgent: true,
+        text: text,
+        voiceAlert: voiceCoachingTip,
+        isWarning: isTooFast || isTooQuiet,
+        metrics: `ความเร็วการพูด ${wpm} WPM | ความมั่นใจน้ำเสียง ${isTooFast || isTooQuiet ? 72 : 92}/100`
+      });
+
+      comboCount++;
+      trustScore = Math.min(98, trustScore + (isTooFast || isTooQuiet ? 6 : 14));
+      document.getElementById('trustScoreText').textContent = trustScore + '%';
+      document.getElementById('comboPill').style.display = 'inline-flex';
+      document.getElementById('comboText').textContent = `${comboCount}x COMBO`;
+      renderChat();
+
+      // สร้างบทโต้ตอบเรียลไทม์จาก Gemini API / Fallback Engine
+      setTimeout(() => {
+        let reply = '';
+        if (isTooFast) {
+          reply = `โอ้โห หายใจทันไหมครับเนี่ย พูดรัว 5G แข่งกับผมเลย ฮ่าๆ ลองพูดช้าลงนิดนึงครับ เมื่อกี้คุณพูดถึงเรื่อง ${currentStage.dir} ใช่ไหมครับ?`;
+        } else if (isTooQuiet) {
+          reply = `ฮัลโหลๆ เสียงเบาจังเลยครับ เหมือนกระซิบเลย! พูดดังๆ มั่นใจได้เลยครับ สรุปว่ามีประเด็นไหนเกี่ยวกับ ${currentStage.dir} นะครับ?`;
+        } else if (comboCount === 1) {
+          reply = `ฟังน้ำเสียงคุณแล้วดูจริงใจไม่กดดันดีครับ ความจริงแล้ว ${currentStage.fact} แล้วแบบนี้ผมควรเริ่มวางแผนจากจุดไหนก่อนดีครับ?`;
+        } else {
+          reply = `เห็นภาพชัดเจนเลยครับ! การวางโครงสร้าง ${currentStage.dir} ตอบโจทย์เรื่อง ${currentStage.fact} ของผมได้ตรงจุดมาก กดปุ่ม 'ประเมินผล' ด้านบนเพื่อรับคะแนนและเหรียญรางวัลได้เลยครับ!`;
+        }
+        chatTurns.push({
+          isAgent: false,
+          text: reply,
+          tip: `💡 ทิปส์: เชื่อมโยงข้อมูล "${currentStage.fact}" เข้าสู่ "${currentStage.dir}"`
+        });
+        renderChat();
+        speakCustomerWithLipSync(reply, true);
+      }, 280);
+    }
+
+    function renderChat() {
+      const box = document.getElementById('chatContainer');
+      box.innerHTML = chatTurns.map((t, i) => `
+        <div class="bubble ${t.isAgent ? 'agent' : 'customer'} ${t.isWarning ? 'warning' : ''}">
+          <div class="bubble-header">
+            <span style="color:${t.isAgent ? 'var(--gold)' : 'var(--cyan)'}">${t.isAgent ? '⚜️ คุณ (พูดสด)' : '👤 ' + currentStage.cust}</span>
+            <div style="display:flex;gap:5px;">
+              ${!t.isAgent ? `<span style="cursor:pointer;" title="ฟังเสียงพูด" onclick="speakCustomerWithLipSync('${t.text.replace(/'/g, "\\'")}', false)">🔊</span>` : ''}
+              ${t.tip ? `<span style="cursor:pointer;" title="ดูคำแนะนำโค้ช" onclick="showSimpleModal('💡 คำแนะนำโค้ช AI', '${t.tip.replace(/'/g, "\\'")}')">💡</span>` : ''}
+            </div>
+          </div>
+          <div>${t.text}</div>
+          ${t.voiceAlert ? `<div class="voice-coach-box ${t.isWarning ? 'warn' : 'good'}">${t.voiceAlert}</div>` : ''}
+        </div>
+      `).join('');
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function evaluateStageNow() {
+      const score = Math.min(97, Math.max(76, trustScore));
+      stageBestScores[currentStage.n] = Math.max(stageBestScores[currentStage.n] || 0, score);
+      stageAttemptsCount[currentStage.n] = (stageAttemptsCount[currentStage.n] || 0) + 1;
+      totalAttemptsCount++;
+      renderStageList();
+      renderChallengeTab();
+      renderVaultTab();
+      const myRank = getStageRank(currentStage.n);
+      showSimpleModal(
+        `🎉 ผ่านด่านที่ ${currentStage.n}! คะแนนรวม ${score}/100`,
+        `<p style="margin-bottom:8px;color:var(--emerald);font-weight:700;">🏅 อันดับของคุณในด่านนี้: อันดับที่ #${myRank} / 10</p>
+         <p style="margin-bottom:8px;">• การสร้างความไว้วางใจ (Rapport): ${Math.min(98, score+2)}/100<br>• การแก้ข้อโต้แย้ง: ${score-1}/100<br>• การเก็บข้อมูล (Fact-Finding): ${score}/100<br>• การชี้เป้าหมวดประกัน: ${score+1}/100<br>• น้ำเสียงและจังหวะ (Voice Tone Score): ${score}/100</p>
+         <button class="send-btn" style="width:100%;margin-top:8px;" onclick="closeModal();selectStage(${Math.min(25, currentStage.n + 1)})">ลุยด่านที่ ${Math.min(25, currentStage.n + 1)} ต่อเลย ▶</button>`
+      );
+    }
+
+    function openStageInfoModal() {
+      const rank = getStageRank(currentStage.n);
+      showSimpleModal(
+        `📂 แฟ้มข้อมูลเตรียมตัว: ${currentStage.title}`,
+        `<p style="margin-bottom:6px;color:var(--gold);font-weight:700;">🏅 อันดับปัจจุบันของคุณในด่านนี้: #${rank} / 10</p>
+         <p style="margin-bottom:6px;"><strong>👤 ตัวละครลูกค้า:</strong> ${currentStage.cust} (${currentStage.age} ปี • ${currentStage.job})</p>
+         <p style="margin-bottom:6px;"><strong>🎭 นิสัยประจำตัว:</strong> ${currentStage.persona}</p>
+         <p style="margin-bottom:6px;color:#FDA4AF;"><strong>🔍 ข้อมูลลับทางการเงิน (ใช้เตรียมตัว):</strong> ${currentStage.fact}</p>
+         <p style="margin-bottom:6px;color:var(--emerald);"><strong>🎯 ภารกิจที่ต้องทำ:</strong> ${currentStage.obj}</p>
+         <p style="color:var(--cyan);"><strong>🧭 หมวดความคุ้มครองเป้าหมาย:</strong> ${currentStage.dir}</p>`
+      );
+    }
+
+    function openTipsModal() {
+      const line1 = `เข้าใจเลยครับคุณ${currentStage.cust.split(' ')[0]} วันนี้ผมไม่ได้มาเสนอขายแต่อยากขออนุญาตแลกเปลี่ยนมุมมองสั้นๆ 15 นาทีครับ`;
+      const line2 = `จากข้อมูลเรื่อง ${currentStage.fact} ผมแนะนำให้วางโครงสร้าง ${currentStage.dir} เป็นอันดับแรกครับ`;
+      showSimpleModal(
+        `💡 คัมภีร์พูดพิชิตใจ ${currentStage.cust}`,
+        `<p style="margin-bottom:10px;">แตะเลือกประโยคด้านล่างเพื่อพูดโต้ตอบทันที:</p>
+         <button class="tab-btn" style="width:100%;text-align:left;margin-bottom:8px;" onclick="closeModal();document.getElementById('speechInput').value='${line1}';sendAgentSpeech();">💬 "${line1}"</button>
+         <button class="tab-btn" style="width:100%;text-align:left;" onclick="closeModal();document.getElementById('speechInput').value='${line2}';sendAgentSpeech();">🎯 "${line2}"</button>`
+      );
+    }
+
+    function renderChallengeTab() {
+      const myPts = Object.values(stageBestScores).reduce((a, b) => a + b, 0) + totalAttemptsCount * 25;
+      const myBest = Math.max(0, ...Object.values(stageBestScores));
+      const myCleared = Object.values(stageBestScores).filter(s => s >= 70).length;
+
+      const allPlayers = [
+        ...RIVALS.map(r => ({ ...r, isMe: false })),
+        { name: "คุณ (จอมยุทธ์นักขาย)", title: equippedTitle, emoji: "👑", pts: myPts, best: myBest, attempts: totalAttemptsCount, cleared: myCleared, isMe: true }
+      ];
+
+      const byScore = [...allPlayers].sort((a, b) => b.pts - a.pts);
+      const byAttempts = [...allPlayers].sort((a, b) => b.attempts - a.attempts || b.pts - a.pts);
+
+      const myScoreRank = byScore.findIndex(p => p.isMe) + 1;
+      const myAttemptsRank = byAttempts.findIndex(p => p.isMe) + 1;
+      document.getElementById('myOverallScoreRankText').textContent = `อันดับ #${myScoreRank} (${myPts} แต้ม)`;
+      document.getElementById('myOverallAttemptsRankText').textContent = `อันดับ #${myAttemptsRank} (${totalAttemptsCount} ครั้ง)`;
+
+      document.getElementById('highScoreLeaderboardContainer').innerHTML = byScore.map((p, i) => `
+        <div class="rank-row ${p.isMe ? 'me' : ''}">
+          <div>
+            <strong>#${i + 1} ${p.emoji} ${p.name}</strong>
+            <div style="font-size:0.74rem;color:var(--muted);">ฉายา: ${p.title} • ผ่าน ${p.cleared}/25 ด่าน</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="color:var(--gold);font-weight:800;">🏆 ${p.pts} แต้ม</div>
+            <div style="font-size:0.72rem;color:var(--emerald);">สูงสุด ${p.best}/100</div>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('attemptsLeaderboardContainer').innerHTML = byAttempts.map((p, i) => `
+        <div class="rank-row ${p.isMe ? 'me' : ''}">
+          <div>
+            <strong>#${i + 1} ${p.emoji} ${p.name}</strong>
+            <div style="font-size:0.74rem;color:var(--muted);">ฉายา: ${p.title}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="color:var(--cyan);font-weight:800;">🔥 ${p.attempts} ครั้ง</div>
+            <div style="font-size:0.72rem;color:var(--muted);">แต้มรวม ${p.pts}</div>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('perStageRanksContainer').innerHTML = STAGES.map(s => {
+        const r = getStageRank(s.n);
+        const best = stageBestScores[s.n] || 0;
+        const att = stageAttemptsCount[s.n] || 0;
+        return `
+          <div class="rank-row">
+            <div style="overflow:hidden;padding-right:8px;">
+              <div style="font-weight:700;font-size:0.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.title}</div>
+              <div style="font-size:0.74rem;color:var(--muted);">👤 ${s.cust} • คะแนนคุณ ${best}/100 (${att} ครั้ง)</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+              <span style="color:${r<=3?'var(--gold)':'var(--cyan)'};font-weight:800;">อันดับ #${r}</span>
+              <button class="tab-btn active" style="padding:4px 10px;font-size:0.74rem;" onclick="switchTab('game');selectStage(${s.n});">ชิงแชมป์</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderVaultTab() {
+      const badges = [
+        { emoji: "🐣", title: "เปิดซิงยุทธภพ", rankName: "จอมยุทธ์ฝึกหัดหัดถือแฟ้ม", cond: "ซ้อมจบครบ 1 ครั้ง", unlocked: totalAttemptsCount >= 1 },
+        { emoji: "⚡", title: "แร็ปเปอร์ขายประกัน 5G", rankName: "จรวดทางเรียบ 170 คำต่อนาที", cond: "พูดเร็วทะลุ 165 WPM จนระบบ Voice Coaching เตือน!", unlocked: triggeredFastWpm },
+        { emoji: "🤫", title: "กระซิบรักข้างใบหู", rankName: "นักขายสาย ASMR ง่วงนอน", cond: "พูดเสียงเบาจนระบบเตือนให้เพิ่มพลังเสียง", unlocked: triggeredQuietVoice },
+        { emoji: "🎙️", title: "นักพากย์เสียงทองคำ", rankName: "หล่อ/สวยด้วยเสียงระดับวิทยุ", cond: "ได้คะแนนรวมด่านใดก็ได้ 85+", unlocked: Object.values(stageBestScores).some(s => s >= 85) },
+        { emoji: "💉", title: "ผู้จัดระเบียบตู้เซฟเจ๊พิมพ์", rankName: "เลขาฯ ส่วนตัวคลินิกพันล้าน", cond: "ผ่านด่านที่ 2 (เจ๊พิมพ์ โบท็อกซ์ทองคำ)", unlocked: (stageBestScores[2] || 0) >= 70 },
+        { emoji: "🧱", title: "คนเหล็กสยบเฮียวิชัย", rankName: "ผู้รอดชีวิตจากเสียง 120 เดซิเบล", cond: "ผ่านด่านที่ 5 (เฮียวิชัย หินคลุกเหล็กเส้น)", unlocked: (stageBestScores[5] || 0) >= 70 },
+        { emoji: "🔥", title: "นักซ้อมสายถึก คึกทุกด่าน", rankName: "ขยันซ้อมไม่ยอมพักไมค์", cond: "สะสมจำนวนครั้งการซ้อมครบ 5 ครั้ง", unlocked: totalAttemptsCount >= 5 },
+        { emoji: "🐉", title: "ผู้พิชิตเจ้าสัวมังกรทอง", rankName: "ที่ปรึกษาคู่ใจมหาเศรษฐีพันล้าน", cond: "ผ่านด่านบอสใหญ่ ด่านที่ 25", unlocked: (stageBestScores[25] || 0) >= 70 }
+      ];
+      document.getElementById('badgesGridContainer').innerHTML = badges.map(b => `
+        <div class="rank-row ${equippedTitle === b.rankName ? 'me' : ''}" style="opacity:${b.unlocked ? 1 : 0.6};">
+          <div>
+            <div style="font-weight:700;">${b.unlocked ? b.emoji : '🔒'} ${b.title}</div>
+            <div style="font-size:0.76rem;color:var(--gold);">ฉายา: "${b.rankName}"</div>
+            <div style="font-size:0.72rem;color:var(--muted);">${b.cond}</div>
+          </div>
+          ${b.unlocked ? `<button class="tab-btn active" style="font-size:0.74rem;" onclick="equipTitle('${b.rankName}')">${equippedTitle === b.rankName ? '✅ สวมอยู่' : 'สวมฉายา'}</button>` : '<span style="font-size:0.74rem;color:var(--muted);">ยังไม่ปลดล็อก</span>'}
+        </div>
+      `).join('');
+    }
+
+    function equipTitle(title) {
+      equippedTitle = title;
+      document.getElementById('equippedTitleBadge').textContent = `🏅 ฉายา: ${title}`;
+      renderVaultTab();
+      renderChallengeTab();
+    }
+
+    function showSimpleModal(title, html) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('infoModalBackdrop').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('infoModalBackdrop').style.display = 'none';
+    }
+
+    function switchTab(tab) {
+      ['game', 'challenge', 'vault', 'admin'].forEach((t, idx) => {
+        document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+        document.querySelectorAll('.topbar .tab-btn')[idx].classList.toggle('active', t === tab);
+      });
+      if (tab === 'challenge') renderChallengeTab();
+      if (tab === 'vault') renderVaultTab();
+    }
+
+    // วาดฉากตัวละครคู่สนทนา 60 FPS พร้อมปากขยับ Lip-Sync ทั้งฝั่งเราและฝั่งลูกค้า
+    const canvas = document.getElementById('roleplayCanvas');
+    const ctx = canvas.getContext('2d');
+    function drawStage(now) {
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, '#091326');
+      grad.addColorStop(1, '#132242');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      // เส้นคลื่นเสียงเชื่อมระหว่างตัวละครขณะพูดสด
+      if (isCustomerSpeaking || isAgentSpeaking) {
+        ctx.strokeStyle = isCustomerSpeaking ? '#22D3EE' : '#F4C430';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (let x = w * 0.30; x <= w * 0.70; x += 10) {
+          const y = h * 0.52 + Math.sin(x * 0.05 + now * 0.012) * 14;
+          if (x === w * 0.30) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      drawCharacter(w * 0.25, h * 0.54, '#22D3EE', isCustomerSpeaking, customerMouthOpen, currentStage.cust.split(' ')[0], 'ลูกค้า AI (คุยสด)');
+      drawCharacter(w * 0.75, h * 0.54, '#F4C430', isAgentSpeaking, agentMouthOpen, 'ตัวคุณ (Agent)', equippedTitle);
+      requestAnimationFrame(drawStage);
+    }
+
+    function drawCharacter(cx, cy, color, speaking, mouthOpen, name, role) {
+      if (speaking) {
+        ctx.fillStyle = color + '33';
+        ctx.beginPath();
+        ctx.arc(cx, cy - 8, 56 + Math.sin(performance.now() * 0.015) * 6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = '#1E293B';
+      ctx.beginPath();
+      ctx.arc(cx, cy + 56, 46, Math.PI, 0);
+      ctx.fill();
+
+      ctx.fillStyle = '#F5CBA7';
+      ctx.beginPath();
+      ctx.arc(cx, cy - 10, 36, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#0F172A';
+      ctx.beginPath();
+      ctx.arc(cx - 12, cy - 14, 3.5, 0, Math.PI * 2);
+      ctx.arc(cx + 12, cy - 14, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // วาดปากขยับ Lip-Sync อัตโนมัติ
+      ctx.fillStyle = '#881337';
+      ctx.beginPath();
+      const mw = 14;
+      const mh = Math.max(2.5, mouthOpen * 16);
+      ctx.ellipse(cx, cy + 7, mw, mh, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#F8FAFC';
+      ctx.font = 'bold 13px Prompt, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(name, cx, cy + 74);
+      ctx.fillStyle = color;
+      ctx.font = '11px Sarabun, sans-serif';
+      ctx.fillText(role, cx, cy + 90);
+    }
+
+    selectStage(1);
+    requestAnimationFrame(drawStage);
+  </script>
+</body>
+</html>

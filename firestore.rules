@@ -1,0 +1,287 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+             'email_verified' in request.auth.token &&
+             request.auth.token.email_verified == true &&
+             'email' in request.auth.token &&
+             (request.auth.token.email == 'Wisarutpoom@gmail.com' ||
+              request.auth.token.email == 'wisarutpoom@gmail.com');
+    }
+
+    function isValidStageAttempt(data) {
+      return data.userId is string &&
+             data.userId == request.auth.uid &&
+             data.userId.size() >= 1 &&
+             data.userId.size() <= 128 &&
+             data.agentName is string &&
+             data.agentName.size() >= 1 &&
+             data.agentName.size() <= 100 &&
+             data.teamCode is string &&
+             data.teamCode.size() >= 1 &&
+             data.teamCode.size() <= 50 &&
+             data.stageNumber is int &&
+             data.stageNumber >= 1 &&
+             data.stageNumber <= 25 &&
+             data.stageTitle is string &&
+             data.stageTitle.size() >= 1 &&
+             data.stageTitle.size() <= 200 &&
+             data.category is string &&
+             data.category in ['COLD_CALL', 'FIRST_MEET', 'FACT_FINDING', 'NEEDS_ANALYSIS'] &&
+             data.overallScore is int &&
+             data.overallScore >= 0 &&
+             data.overallScore <= 100 &&
+             data.rapportScore is int &&
+             data.rapportScore >= 0 &&
+             data.rapportScore <= 100 &&
+             data.objectionScore is int &&
+             data.objectionScore >= 0 &&
+             data.objectionScore <= 100 &&
+             data.factFindingScore is int &&
+             data.factFindingScore >= 0 &&
+             data.factFindingScore <= 100 &&
+             data.preApproachScore is int &&
+             data.preApproachScore >= 0 &&
+             data.preApproachScore <= 100 &&
+             data.voiceToneScore is int &&
+             data.voiceToneScore >= 0 &&
+             data.voiceToneScore <= 100 &&
+             data.voiceFeedback is string &&
+             data.voiceFeedback.size() <= 2000 &&
+             data.coachSummary is string &&
+             data.coachSummary.size() <= 3000 &&
+             data.passed is bool &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    function isValidAgentTelemetry(data) {
+      return data.userId is string &&
+             data.userId == request.auth.uid &&
+             data.userId.size() >= 1 &&
+             data.userId.size() <= 128 &&
+             data.agentName is string &&
+             data.agentName.size() >= 1 &&
+             data.agentName.size() <= 100 &&
+             data.teamCode is string &&
+             data.teamCode.size() >= 1 &&
+             data.teamCode.size() <= 50 &&
+             data.visitCount is int &&
+             data.visitCount >= 1 &&
+             data.visitCount <= 1000000 &&
+             data.totalAttemptsCount is int &&
+             data.totalAttemptsCount >= 0 &&
+             data.totalAttemptsCount <= 1000000 &&
+             data.enteredStagesCsv is string &&
+             data.enteredStagesCsv.size() <= 200 &&
+             data.completedStagesCsv is string &&
+             data.completedStagesCsv.size() <= 200 &&
+             data.enteredStagesCount is int &&
+             data.enteredStagesCount >= 0 &&
+             data.enteredStagesCount <= 25 &&
+             data.completedStagesCount is int &&
+             data.completedStagesCount >= 0 &&
+             data.completedStagesCount <= 25 &&
+             data.bestOverallScore is int &&
+             data.bestOverallScore >= 0 &&
+             data.bestOverallScore <= 100 &&
+             data.averageOverallScore is int &&
+             data.averageOverallScore >= 0 &&
+             data.averageOverallScore <= 100 &&
+             data.averageVoiceScore is int &&
+             data.averageVoiceScore >= 0 &&
+             data.averageVoiceScore <= 100 &&
+             data.lastActiveStage is int &&
+             data.lastActiveStage >= 0 &&
+             data.lastActiveStage <= 25 &&
+             data.lastActiveStageTitle is string &&
+             data.lastActiveStageTitle.size() <= 200 &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    function isValidStaffPermission(data) {
+      return data.userId is string &&
+             (data.userId == request.auth.uid || isAdmin()) &&
+             data.userId.size() >= 1 &&
+             data.userId.size() <= 128 &&
+             data.staffEmail is string &&
+             data.staffEmail.size() >= 3 &&
+             data.staffEmail.size() <= 150 &&
+             data.staffName is string &&
+             data.staffName.size() >= 1 &&
+             data.staffName.size() <= 100 &&
+             data.role is string &&
+             data.role in ['ADMIN', 'SECRETARY', 'SUB_ADMIN', 'VIEWER'] &&
+             data.status is string &&
+             data.status in ['APPROVED', 'PENDING', 'REVOKED'] &&
+             data.canViewVisitsAndStages is bool &&
+             data.canViewScores is bool &&
+             data.canExportCsv is bool &&
+             data.canManageTeam is bool &&
+             data.approvedByEmail is string &&
+             data.approvedByEmail.size() <= 150 &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    match /stage_attempts/{attemptId} {
+      allow get: if isSignedIn() && isValidId(attemptId) && (existing().userId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
+
+      allow create: if isSignedIn() &&
+                       isValidId(attemptId) &&
+                       incoming().keys().hasAll([
+                         'userId', 'agentName', 'teamCode', 'stageNumber', 'stageTitle',
+                         'category', 'overallScore', 'rapportScore', 'objectionScore',
+                         'factFindingScore', 'preApproachScore', 'voiceToneScore',
+                         'voiceFeedback', 'coachSummary', 'passed', 'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'agentName', 'teamCode', 'stageNumber', 'stageTitle',
+                         'category', 'overallScore', 'rapportScore', 'objectionScore',
+                         'factFindingScore', 'preApproachScore', 'voiceToneScore',
+                         'voiceFeedback', 'coachSummary', 'passed', 'createdAt', 'updatedAt'
+                       ]) &&
+                       isValidStageAttempt(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidId(attemptId) &&
+                       isValidStageAttempt(incoming()) &&
+                       (
+                         isAdmin() ||
+                         (
+                           existing().userId == request.auth.uid &&
+                           incoming().userId == existing().userId &&
+                           incoming().createdAt == existing().createdAt &&
+                           incoming().diff(existing()).affectedKeys().hasOnly([
+                             'overallScore', 'rapportScore', 'objectionScore',
+                             'factFindingScore', 'preApproachScore', 'voiceToneScore',
+                             'voiceFeedback', 'coachSummary', 'passed', 'updatedAt'
+                           ])
+                         )
+                       );
+
+      allow delete: if isSignedIn() && isValidId(attemptId) && (existing().userId == request.auth.uid || isAdmin());
+    }
+
+    match /agent_telemetry/{userId} {
+      allow get: if isSignedIn() && isValidId(userId) && (request.auth.uid == userId || isAdmin());
+      allow list: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
+
+      allow create: if isSignedIn() &&
+                       isValidId(userId) &&
+                       request.auth.uid == userId &&
+                       incoming().keys().hasAll([
+                         'userId', 'agentName', 'teamCode', 'visitCount', 'totalAttemptsCount',
+                         'enteredStagesCsv', 'completedStagesCsv', 'enteredStagesCount',
+                         'completedStagesCount', 'bestOverallScore', 'averageOverallScore',
+                         'averageVoiceScore', 'lastActiveStage', 'lastActiveStageTitle',
+                         'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'agentName', 'teamCode', 'visitCount', 'totalAttemptsCount',
+                         'enteredStagesCsv', 'completedStagesCsv', 'enteredStagesCount',
+                         'completedStagesCount', 'bestOverallScore', 'averageOverallScore',
+                         'averageVoiceScore', 'lastActiveStage', 'lastActiveStageTitle',
+                         'createdAt', 'updatedAt'
+                       ]) &&
+                       isValidAgentTelemetry(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidId(userId) &&
+                       isValidAgentTelemetry(incoming()) &&
+                       (
+                         isAdmin() ||
+                         (
+                           request.auth.uid == userId &&
+                           existing().userId == request.auth.uid &&
+                           incoming().userId == existing().userId &&
+                           incoming().createdAt == existing().createdAt &&
+                           incoming().diff(existing()).affectedKeys().hasOnly([
+                             'agentName', 'teamCode', 'visitCount', 'totalAttemptsCount',
+                             'enteredStagesCsv', 'completedStagesCsv', 'enteredStagesCount',
+                             'completedStagesCount', 'bestOverallScore', 'averageOverallScore',
+                             'averageVoiceScore', 'lastActiveStage', 'lastActiveStageTitle',
+                             'updatedAt'
+                           ])
+                         )
+                       );
+
+      allow delete: if isSignedIn() && isValidId(userId) && (request.auth.uid == userId || isAdmin());
+    }
+
+    match /staff_permissions/{permissionId} {
+      allow get: if isSignedIn() &&
+                    isValidId(permissionId) &&
+                    (existing().userId == request.auth.uid ||
+                     ('email_verified' in request.auth.token && request.auth.token.email_verified == true && existing().staffEmail == request.auth.token.email) ||
+                     isAdmin());
+      allow list: if isSignedIn() &&
+                     (existing().userId == request.auth.uid ||
+                      ('email_verified' in request.auth.token && request.auth.token.email_verified == true && existing().staffEmail == request.auth.token.email) ||
+                      isAdmin());
+
+      allow create: if isSignedIn() &&
+                       isValidId(permissionId) &&
+                       incoming().keys().hasAll([
+                         'userId', 'staffEmail', 'staffName', 'role', 'status',
+                         'canViewVisitsAndStages', 'canViewScores', 'canExportCsv',
+                         'canManageTeam', 'approvedByEmail', 'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'staffEmail', 'staffName', 'role', 'status',
+                         'canViewVisitsAndStages', 'canViewScores', 'canExportCsv',
+                         'canManageTeam', 'approvedByEmail', 'createdAt', 'updatedAt'
+                       ]) &&
+                       isValidStaffPermission(incoming()) &&
+                       (isAdmin() || incoming().status == 'PENDING');
+
+      allow update: if isSignedIn() &&
+                       isValidId(permissionId) &&
+                       isValidStaffPermission(incoming()) &&
+                       (
+                         isAdmin() ||
+                         (
+                           existing().userId == request.auth.uid &&
+                           incoming().userId == existing().userId &&
+                           incoming().createdAt == existing().createdAt &&
+                           incoming().status == existing().status &&
+                           incoming().role == existing().role &&
+                           incoming().diff(existing()).affectedKeys().hasOnly([
+                             'staffName', 'updatedAt'
+                           ])
+                         )
+                       );
+
+      allow delete: if isSignedIn() && isValidId(permissionId) && (existing().userId == request.auth.uid || isAdmin());
+    }
+  }
+}

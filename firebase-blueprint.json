@@ -1,0 +1,297 @@
+{
+  "entities": {
+    "StageAttempt": {
+      "title": "StageAttempt",
+      "description": "Records an insurance agent's role-play stage attempt, multi-dimensional evaluation scores, and AI voice tone coaching feedback.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the authenticated Google user who completed the stage."
+        },
+        "agentName": {
+          "type": "string",
+          "description": "Display name of the insurance agent."
+        },
+        "teamCode": {
+          "type": "string",
+          "description": "Team identifier code for group training."
+        },
+        "stageNumber": {
+          "type": "integer",
+          "description": "Stage number from 1 to 25."
+        },
+        "stageTitle": {
+          "type": "string",
+          "description": "Title of the role-play stage."
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "COLD_CALL",
+            "FIRST_MEET",
+            "FACT_FINDING",
+            "NEEDS_ANALYSIS"
+          ],
+          "description": "Category of the insurance training stage."
+        },
+        "overallScore": {
+          "type": "integer",
+          "description": "Overall weighted score from 0 to 100."
+        },
+        "rapportScore": {
+          "type": "integer",
+          "description": "Rapport and trust building score from 0 to 100."
+        },
+        "objectionScore": {
+          "type": "integer",
+          "description": "Objection handling score from 0 to 100."
+        },
+        "factFindingScore": {
+          "type": "integer",
+          "description": "Fact-finding and questioning depth score from 0 to 100."
+        },
+        "preApproachScore": {
+          "type": "integer",
+          "description": "Needs analysis and insurance concept bridging score from 0 to 100."
+        },
+        "voiceToneScore": {
+          "type": "integer",
+          "description": "Voice tone, pacing, warmth, and confidence score from 0 to 100."
+        },
+        "voiceFeedback": {
+          "type": "string",
+          "description": "Detailed AI feedback on the agent's vocal tone and pacing."
+        },
+        "coachSummary": {
+          "type": "string",
+          "description": "Actionable coaching feedback and strengths/improvements from Gemini."
+        },
+        "passed": {
+          "type": "boolean",
+          "description": "Whether the agent achieved the passing threshold (>= 70)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the attempt was created via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the attempt was last updated via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "userId",
+        "agentName",
+        "teamCode",
+        "stageNumber",
+        "stageTitle",
+        "category",
+        "overallScore",
+        "rapportScore",
+        "objectionScore",
+        "factFindingScore",
+        "preApproachScore",
+        "voiceToneScore",
+        "voiceFeedback",
+        "coachSummary",
+        "passed",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "AgentTelemetry": {
+      "title": "AgentTelemetry",
+      "description": "Aggregated user activity, login/visit count, stages entered, stages passed, and average scores for the Admin Website and Dashboard.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the authenticated agent."
+        },
+        "agentName": {
+          "type": "string",
+          "description": "Display name of the agent."
+        },
+        "teamCode": {
+          "type": "string",
+          "description": "Team code the agent belongs to."
+        },
+        "visitCount": {
+          "type": "integer",
+          "description": "Total number of app visits and training sessions started."
+        },
+        "totalAttemptsCount": {
+          "type": "integer",
+          "description": "Total number of role-play stage evaluations completed."
+        },
+        "enteredStagesCsv": {
+          "type": "string",
+          "description": "Comma-separated list of stage numbers (1-25) the agent has entered/played."
+        },
+        "completedStagesCsv": {
+          "type": "string",
+          "description": "Comma-separated list of stage numbers (1-25) the agent has passed (>=70)."
+        },
+        "enteredStagesCount": {
+          "type": "integer",
+          "description": "Count of unique stages entered by the agent."
+        },
+        "completedStagesCount": {
+          "type": "integer",
+          "description": "Count of unique stages passed by the agent."
+        },
+        "bestOverallScore": {
+          "type": "integer",
+          "description": "Highest overall score achieved by the agent (0-100)."
+        },
+        "averageOverallScore": {
+          "type": "integer",
+          "description": "Average overall score across all attempts (0-100)."
+        },
+        "averageVoiceScore": {
+          "type": "integer",
+          "description": "Average voice tone score across all attempts (0-100)."
+        },
+        "lastActiveStage": {
+          "type": "integer",
+          "description": "Most recent stage number entered or completed (0-25)."
+        },
+        "lastActiveStageTitle": {
+          "type": "string",
+          "description": "Title of the most recent stage entered or completed."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when telemetry profile was first created via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when telemetry was last updated via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "userId",
+        "agentName",
+        "teamCode",
+        "visitCount",
+        "totalAttemptsCount",
+        "enteredStagesCsv",
+        "completedStagesCsv",
+        "enteredStagesCount",
+        "completedStagesCount",
+        "bestOverallScore",
+        "averageOverallScore",
+        "averageVoiceScore",
+        "lastActiveStage",
+        "lastActiveStageTitle",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "StaffPermission": {
+      "title": "StaffPermission",
+      "description": "Stores Gmail-based access permissions and approval status for Secretaries and Sub-Admins assisting the team.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who created or requested the permission record."
+        },
+        "staffEmail": {
+          "type": "string",
+          "description": "Gmail address of the secretary or assistant admin."
+        },
+        "staffName": {
+          "type": "string",
+          "description": "Display name or title of the secretary/staff member."
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "ADMIN",
+            "SECRETARY"
+          ],
+          "description": "Assigned role: ADMIN or SECRETARY."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "APPROVED",
+            "PENDING",
+            "REVOKED"
+          ],
+          "description": "Approval status of the staff member."
+        },
+        "canViewVisitsAndStages": {
+          "type": "boolean",
+          "description": "Whether the secretary can view agent visit counts and stages entered."
+        },
+        "canViewScores": {
+          "type": "boolean",
+          "description": "Whether the secretary can view 5-dimension evaluation scores and voice tone feedback."
+        },
+        "canExportCsv": {
+          "type": "boolean",
+          "description": "Whether the secretary can export and download CSV reports."
+        },
+        "canManageTeam": {
+          "type": "boolean",
+          "description": "Whether the secretary can manage team settings and approve other staff."
+        },
+        "approvedByEmail": {
+          "type": "string",
+          "description": "Gmail of the admin who approved or updated this permission."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the record was created via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the record was last updated via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "userId",
+        "staffEmail",
+        "staffName",
+        "role",
+        "status",
+        "canViewVisitsAndStages",
+        "canViewScores",
+        "canExportCsv",
+        "canManageTeam",
+        "approvedByEmail",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/stage_attempts/{attemptId}": {
+      "schema": {
+        "$ref": "#/entities/StageAttempt"
+      },
+      "description": "Stores role-play stage attempts and 5-dimension evaluation scores scoped to the authenticated user and readable by Admin."
+    },
+    "/agent_telemetry/{userId}": {
+      "schema": {
+        "$ref": "#/entities/AgentTelemetry"
+      },
+      "description": "Stores per-agent visit counts, stages entered, stages passed, and score averages for the Admin Website."
+    },
+    "/staff_permissions/{permissionId}": {
+      "schema": {
+        "$ref": "#/entities/StaffPermission"
+      },
+      "description": "Stores Secretary and Sub-Admin Gmail approvals and granular access flags."
+    }
+  }
+}

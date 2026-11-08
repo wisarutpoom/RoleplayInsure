@@ -1,0 +1,6 @@
+{
+  "name": "InsureQuest",
+  "description": "ระบบเกมฝึกซ้อม Role-Play 25 ด่านและโค้ชวิเคราะห์น้ำเสียงด้วย Gemini AI สำหรับทีมตัวแทนประกัน",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
